@@ -9,10 +9,12 @@
     <style>
         /* --- CSS VARIABLES & RESET --- */
         :root {
-            --bg-color: #0f172a;
-            --text-color: #e2e8f0;
-            --accent-color: #38bdf8; /* Blue accent */
-            --secondary-bg: #1e293b;
+            /* CHANGED TO PURE BLACK THEME */
+            --bg-color: #000000; 
+            --text-color: #f8fafc;
+            --accent-color: #0ea5e9; /* Sky Blue for pop */
+            --secondary-bg: #121212; /* Dark Grey for cards */
+            --border-color: #333333;
             --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
@@ -39,15 +41,16 @@
             justify-content: space-between;
             align-items: center;
             padding: 1.5rem 5%;
-            background-color: rgba(15, 23, 42, 0.95);
+            background-color: rgba(0, 0, 0, 0.9); /* Black transparent */
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid #334155;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .logo { font-size: 1.5rem; font-weight: bold; color: var(--accent-color); }
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--text-color); }
+        .logo span { color: var(--accent-color); }
         
         .nav-links { display: flex; gap: 2rem; }
         .nav-links a:hover { color: var(--accent-color); }
@@ -61,16 +64,17 @@
             align-items: center;
             text-align: center;
             padding: 0 20px;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000000 70%); /* Subtle gradient */
         }
 
         .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; }
         .hero span { color: var(--accent-color); }
-        .hero p { font-size: 1.2rem; margin-bottom: 2rem; color: #94a3b8; max-width: 600px; }
+        .hero p { font-size: 1.2rem; margin-bottom: 2rem; color: #a1a1aa; max-width: 600px; }
         
         .btn {
             padding: 10px 25px;
             background-color: var(--accent-color);
-            color: var(--bg-color);
+            color: #000;
             font-weight: bold;
             border-radius: 5px;
             border: 2px solid var(--accent-color);
@@ -79,13 +83,14 @@
         .btn:hover { background: transparent; color: var(--accent-color); }
 
         /* --- SECTIONS COMMON --- */
-        section { padding: 5rem 10%; }
+        section { padding: 5rem 10%; border-bottom: 1px solid #111; }
         .section-title {
             text-align: center;
             font-size: 2rem;
             margin-bottom: 3rem;
             text-transform: uppercase;
             letter-spacing: 2px;
+            color: var(--text-color);
         }
 
         /* --- PROJECTS GRID --- */
@@ -99,10 +104,15 @@
             background-color: var(--secondary-bg);
             padding: 1.5rem;
             border-radius: 8px;
+            border: 1px solid var(--border-color);
             transition: transform 0.3s;
         }
 
-        .project-card:hover { transform: translateY(-5px); }
+        .project-card:hover { 
+            transform: translateY(-5px); 
+            border-color: var(--accent-color);
+        }
+        
         .project-card h3 { margin-bottom: 0.5rem; color: var(--accent-color); }
         .project-tags {
             margin-top: 1rem;
@@ -110,7 +120,7 @@
             gap: 10px;
             font-size: 0.8rem;
         }
-        .tag { background: #334155; padding: 2px 8px; border-radius: 4px; }
+        .tag { background: #262626; padding: 2px 8px; border-radius: 4px; color: #ccc; }
 
         /* --- EXPERIENCE TIMELINE --- */
         .timeline-item {
@@ -131,8 +141,8 @@
             border-radius: 50%;
         }
 
-        .role { font-weight: bold; font-size: 1.1rem; }
-        .company { color: #94a3b8; font-size: 0.9rem; margin-bottom: 0.5rem; display: block;}
+        .role { font-weight: bold; font-size: 1.1rem; color: #fff; }
+        .company { color: #a1a1aa; font-size: 0.9rem; margin-bottom: 0.5rem; display: block;}
 
         /* --- SKILLS --- */
         .skills-container {
@@ -143,10 +153,12 @@
         }
         .skill-badge {
             background: var(--secondary-bg);
+            color: #fff;
             padding: 10px 20px;
             border-radius: 50px;
-            border: 1px solid #334155;
+            border: 1px solid var(--border-color);
         }
+        .skill-badge:hover { border-color: var(--accent-color); }
 
         /* --- EDUCATION --- */
         .education-block {
@@ -154,11 +166,13 @@
             padding: 1.5rem;
             border-radius: 8px;
             margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
         }
 
         /* --- CONTACT --- */
         .contact { text-align: center; }
-        .contact p { margin-bottom: 1rem; }
+        .contact p { margin-bottom: 1rem; color: #ccc; }
+        .contact strong { color: #fff; }
         .social-links {
             margin-top: 2rem;
             font-size: 2rem;
@@ -166,14 +180,17 @@
             justify-content: center;
             gap: 2rem;
         }
+        .social-links a { color: #888; }
+        .social-links a:hover { color: var(--accent-color); }
 
         /* --- FOOTER --- */
         footer {
             text-align: center;
             padding: 2rem;
-            background: var(--secondary-bg);
+            background: #000000;
             font-size: 0.9rem;
             color: #64748b;
+            border-top: 1px solid var(--border-color);
         }
 
         /* --- MOBILE RESPONSIVENESS --- */
@@ -187,7 +204,7 @@
 <body>
 
     <nav>
-        <div class="logo">ZEEHAN.</div>
+        <div class="logo">ZEEHAN<span>.</span></div>
         <div class="nav-links">
             <a href="#about">About</a>
             <a href="#experience">Experience</a>
@@ -205,7 +222,7 @@
 
     <section id="about">
         <h2 class="section-title">About Me</h2>
-        <p style="text-align: center; max-width: 700px; margin: 0 auto;">
+        <p style="text-align: center; max-width: 700px; margin: 0 auto; color: #ccc;">
             I am a Mechanical Engineering student with expertise in CAD design and problem-solving. 
             I demonstrate leadership in collaborative projects and drive innovative solutions through teamwork. 
             I have a strong background in project management and strategic planning, and I am committed to continuous learning in dynamic environments.
@@ -218,19 +235,19 @@
         <div class="timeline-item">
             <div class="role">Co-Founder & Treasurer</div>
             <span class="company">Short Circuit, Dhaka | June 2025 - Present</span>
-            <p>Managing inventory systems and supplier collaborations to maintain stock levels. Overseeing financial transactions as Treasurer, ensuring accuracy and compliance.</p>
+            <p style="color: #ccc;">Managing inventory systems and supplier collaborations to maintain stock levels. Overseeing financial transactions as Treasurer, ensuring accuracy and compliance.</p>
         </div>
 
         <div class="timeline-item">
             <div class="role">Intern - Mechanical Department</div>
             <span class="company">GPH Ispat Ltd., Chittagong | Internship</span>
-            <p>Gained hands-on exposure to steel manufacturing processes. Studied operation of rolling mills and furnaces, and assisted engineers in maintenance and safety inspections.</p>
+            <p style="color: #ccc;">Gained hands-on exposure to steel manufacturing processes. Studied operation of rolling mills and furnaces, and assisted engineers in maintenance and safety inspections.</p>
         </div>
         
         <div class="timeline-item">
             <div class="role">Vice-Chairperson</div>
             <span class="company">IMechE IUT Student Chapter</span>
-            <p>Managed club activities and organized major events such as SofE and RoboKick Rumble.</p>
+            <p style="color: #ccc;">Managed club activities and organized major events such as SofE and RoboKick Rumble.</p>
         </div>
     </section>
 
@@ -239,7 +256,7 @@
         <div class="projects-grid">
             <div class="project-card">
                 <h3>Project Altair (Mars Rover)</h3>
-                <p>Senior Member of the Mechanical Team. Competed in URC (18th globally) and European Rover Challenge 2024.</p>
+                <p style="color: #ccc;">Senior Member of the Mechanical Team. Competed in URC (18th globally) and European Rover Challenge 2024.</p>
                 <div class="project-tags">
                     <span class="tag">Mechanical Design</span>
                     <span class="tag">Robotics</span>
@@ -247,7 +264,7 @@
             </div>
             <div class="project-card">
                 <h3>Automech Organizer</h3>
-                <p>Served as Organizer for Automech, one of the largest national automobile festivals in Bangladesh (IUT AUS).</p>
+                <p style="color: #ccc;">Served as Organizer for Automech, one of the largest national automobile festivals in Bangladesh (IUT AUS).</p>
                 <div class="project-tags">
                     <span class="tag">Management</span>
                     <span class="tag">Automotive</span>
@@ -255,68 +272,4 @@
             </div>
             <div class="project-card">
                 <h3>CSWA Certified Design</h3>
-                <p>Achieved Certified SOLIDWORKS Associate (CSWA) certification, demonstrating proficiency in CAD modeling.</p>
-                <div class="project-tags">
-                    <span class="tag">SolidWorks</span>
-                    <span class="tag">CAD</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="skills">
-        <h2 class="section-title">Technical Skills</h2>
-        <div class="skills-container">
-            <span class="skill-badge">SolidWorks (CSWA)</span>
-            <span class="skill-badge">CAD Design</span>
-            <span class="skill-badge">Project Management</span>
-            <span class="skill-badge">Inventory Management</span>
-            <span class="skill-badge">Financial Record Keeping</span>
-            <span class="skill-badge">Microsoft Office</span>
-            <span class="skill-badge">Leadership</span>
-        </div>
-    </section>
-    
-    <section id="education">
-        <h2 class="section-title">Education</h2>
-        <div class="education-block">
-            <h3>B.Sc. in Mechanical Engineering</h3>
-            <span style="color:#94a3b8">Islamic University of Technology (IUT) | CGPA: 3.67/4.00</span>
-            <p style="margin-top: 5px;">2023 - Present</p>
-        </div>
-        <div class="education-block">
-            <h3>Higher Secondary School Certificate (Science)</h3>
-            <span style="color:#94a3b8">Government City College, Chittagong | GPA: 5.00/5.00</span>
-            <p style="margin-top: 5px;">2020 - 2022</p>
-        </div>
-    </section>
-    
-    <section id="awards" style="background-color: #1e293b; text-align: center; margin: 2rem 10%; border-radius: 10px;">
-        <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Awards & Honours</h3>
-        <ul style="color: #cbd5e1; list-style: circle inside; text-align: left; display: inline-block;">
-            <li>University Rover Challenge 2025's Award</li>
-            <li>The Duke of Edinburgh Award (Bronze & Silver)</li>
-            <li>Scholarship for Academic Excellence (Govt. of Bangladesh)</li>
-        </ul>
-    </section>
-
-    <section id="contact">
-        <h2 class="section-title">Let's Connect</h2>
-        <p>Open for engineering projects and research collaborations.</p>
-        <p><strong>Email:</strong> zeehansiddique9@gmail.com</p>
-        <p><strong>Phone:</strong> +8801746507888</p>
-        <p><strong>Location:</strong> Chittagong, Bangladesh</p>
-        
-        <div class="social-links">
-            <a href="https://linkedin.com/in/zeehansiddique" target="_blank"><i class="fab fa-linkedin"></i></a>
-            <a href="mailto:zeehansiddique9@gmail.com"><i class="fas fa-envelope"></i></a>
-            <a href="https://github.com/" target="_blank"><i class="fab fa-github"></i></a>
-        </div>
-    </section>
-
-    <footer>
-        <p>© 2026 MD Zeehan Siddique. All rights reserved.</p>
-    </footer>
-
-</body>
-</html>
+                <p style="color: #ccc;">Achieved Certified SOLIDWORKS
