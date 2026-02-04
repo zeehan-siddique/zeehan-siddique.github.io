@@ -1,6 +1,20 @@
 // Main JavaScript file
 
-document.addEventListener('DOMContentLoaded', () => {
+// SUPABASE CONFIGURATION
+const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+let supabase = null;
+
+if (SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    // Fetch dynamic content if Supabase is connected
+    if (supabase) {
+        loadDynamicContent();
+    }
+
     // Mobile Navigation Toggle
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-list');
@@ -59,12 +73,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // cursorDot.style.left = `${posX}px`;
         // cursorDot.style.top = `${posY}px`;
-        
+
         cursorDot.animate({
             left: `${posX}px`,
             top: `${posY}px`
         }, { duration: 0, fill: "forwards" });
-        
+
         cursorOutline.animate({
             left: `${posX}px`,
             top: `${posY}px`
