@@ -66,7 +66,9 @@
 
         <section class="form-group">
             <h3>Hero Section</h3>
-            <label>Sub-title</label>
+            <label>Full Name</label>
+            <input type="text" id="hero-name" placeholder="MD Zeehan Siddique">
+            <label style="margin-top: 1rem;">Sub-title</label>
             <input type="text" id="hero-subtitle" placeholder="Mechanical Engineer & CAD Designer">
             <label style="margin-top: 1rem;">Description</label>
             <textarea id="hero-desc" rows="3"></textarea>
@@ -152,6 +154,7 @@
                 const content = typeof item.content === 'string' ? JSON.parse(item.content) : item.content;
 
                 if (item.section_name === 'hero') {
+                    document.getElementById('hero-name').value = content.name || '';
                     document.getElementById('hero-subtitle').value = content.subtitle || '';
                     document.getElementById('hero-desc').value = content.description || '';
                 } else if (item.section_name === 'education') {
@@ -219,6 +222,7 @@
 
         async function updateHero() {
             const btn = document.getElementById('save-hero-btn');
+            const name = document.getElementById('hero-name').value;
             const subtitle = document.getElementById('hero-subtitle').value;
             const description = document.getElementById('hero-desc').value;
             const file = document.getElementById('hero-image-file').files[0];
@@ -260,6 +264,7 @@
                 }
 
                 const finalContent = {
+                    name,
                     subtitle,
                     description,
                     profile_url: profileUrl || existingContent.profile_url

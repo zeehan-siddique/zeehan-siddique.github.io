@@ -183,28 +183,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-    // Custom Cursor
-    const cursorDot = document.querySelector('[data-cursor-dot]');
-    const cursorOutline = document.querySelector('[data-cursor-outline]');
-
-    window.addEventListener('mousemove', (e) => {
-        const posX = e.clientX;
-        const posY = e.clientY;
-
-        // cursorDot.style.left = `${posX}px`;
-        // cursorDot.style.top = `${posY}px`;
-
-        cursorDot.animate({
-            left: `${posX}px`,
-            top: `${posY}px`
-        }, { duration: 0, fill: "forwards" });
-
-        cursorOutline.animate({
-            left: `${posX}px`,
-            top: `${posY}px`
-        }, { duration: 500, fill: "forwards" });
-    });
-
     // Theme Toggle (if implemented)
     // Add logic here for light/dark mode if requested
 });
