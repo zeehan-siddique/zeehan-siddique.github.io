@@ -18,7 +18,9 @@ const loadDynamicContent = async () => {
         .single();
 
     if (heroData) {
-        const content = JSON.parse(heroData.content);
+        // Supabase might return it as an object already if column is JSONB
+        const content = typeof heroData.content === 'string' ? JSON.parse(heroData.content) : heroData.content;
+
         if (content.subtitle) document.querySelector('.hero .subtitle').innerText = content.subtitle;
         if (content.description) document.querySelector('.hero .description').innerText = content.description;
         if (content.profile_url) document.querySelector('.profile-pic').src = content.profile_url;
