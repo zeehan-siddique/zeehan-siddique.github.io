@@ -1,363 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MD Zeehan Siddique | Portfolio</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* --- CSS VARIABLES & RESET --- */
-        :root {
-            /* PURE BLACK THEME SETTINGS */
-            --bg-color: #000000; 
-            --text-color: #f8fafc;
-            --accent-color: #0ea5e9; /* Sky Blue for pop against black */
-            --secondary-bg: #050505; /* Almost pure black for cards */
-            --border-color: #262626; /* Subtle border to see cards on black */
-            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+    <meta name="description" content="Portfolio of Zeehan Siddique - Software Developer">
+    <title>Zeehan Siddique | Portfolio</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
-        body {
-            font-family: var(--font-main);
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-        }
-
-        a { text-decoration: none; color: inherit; transition: 0.3s; }
-        ul { list-style: none; }
-
-        /* --- NAVIGATION --- */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 5%;
-            background-color: rgba(0, 0, 0, 0.95); /* High opacity black */
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .logo { font-size: 1.5rem; font-weight: bold; color: var(--text-color); }
-        .logo span { color: var(--accent-color); }
-        
-        .nav-links { display: flex; gap: 2rem; }
-        .nav-links a:hover { color: var(--accent-color); }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 20px;
-            /* Very subtle gradient to break up the flat black slightly */
-            background: radial-gradient(circle at center, #111111 0%, #000000 80%);
-        }
-
-        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; }
-        .hero span { color: var(--accent-color); }
-        .hero p { font-size: 1.2rem; margin-bottom: 2rem; color: #a1a1aa; max-width: 600px; }
-        
-        .btn {
-            padding: 10px 25px;
-            background-color: var(--accent-color);
-            color: #000;
-            font-weight: bold;
-            border-radius: 5px;
-            border: 2px solid var(--accent-color);
-        }
-        
-        .btn:hover { background: transparent; color: var(--accent-color); }
-
-        /* --- SECTIONS COMMON --- */
-        section { padding: 5rem 10%; border-bottom: 1px solid #111; }
-        .section-title {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 3rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-color);
-        }
-
-        /* --- PROJECTS GRID --- */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .project-card {
-            background-color: var(--secondary-bg);
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            transition: transform 0.3s, border-color 0.3s;
-        }
-
-        .project-card:hover { 
-            transform: translateY(-5px); 
-            border-color: var(--accent-color);
-            box-shadow: 0 5px 15px rgba(14, 165, 233, 0.1);
-        }
-        
-        .project-card h3 { margin-bottom: 0.5rem; color: var(--accent-color); }
-        .project-tags {
-            margin-top: 1rem;
-            display: flex;
-            gap: 10px;
-            font-size: 0.8rem;
-        }
-        .tag { background: #1a1a1a; padding: 2px 8px; border-radius: 4px; color: #ccc; border: 1px solid #333; }
-
-        /* --- EXPERIENCE TIMELINE --- */
-        .timeline-item {
-            border-left: 2px solid var(--accent-color);
-            padding-left: 1.5rem;
-            margin-bottom: 2rem;
-            position: relative;
-        }
-        
-        .timeline-item::before {
-            content: '';
-            width: 10px;
-            height: 10px;
-            background: var(--accent-color);
-            position: absolute;
-            left: -6px;
-            top: 5px;
-            border-radius: 50%;
-        }
-
-        .role { font-weight: bold; font-size: 1.1rem; color: #fff; }
-        .company { color: #a1a1aa; font-size: 0.9rem; margin-bottom: 0.5rem; display: block;}
-
-        /* --- SKILLS --- */
-        .skills-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-        }
-        .skill-badge {
-            background: var(--secondary-bg);
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 50px;
-            border: 1px solid var(--border-color);
-            transition: 0.3s;
-        }
-        .skill-badge:hover { border-color: var(--accent-color); color: var(--accent-color); }
-
-        /* --- EDUCATION --- */
-        .education-block {
-            background: var(--secondary-bg);
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            border: 1px solid var(--border-color);
-        }
-        .education-block h3 { color: var(--accent-color); margin-bottom: 5px; }
-
-        /* --- CONTACT --- */
-        .contact { text-align: center; }
-        .contact p { margin-bottom: 1rem; color: #ccc; }
-        .contact strong { color: #fff; }
-        
-        .social-links {
-            margin-top: 2rem;
-            display: flex;
-            justify-content: center;
-            gap: 2.5rem;
-        }
-        
-        /* Icon Styling */
-        .social-links a { 
-            color: #888; 
-            font-size: 2.5rem; /* Larger icons */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .social-links a span {
-            font-size: 0.9rem;
-            opacity: 0;
-            transition: 0.3s;
-        }
-
-        .social-links a:hover { color: var(--accent-color); transform: scale(1.1); }
-        .social-links a:hover span { opacity: 1; }
-
-        /* --- FOOTER --- */
-        footer {
-            text-align: center;
-            padding: 2rem;
-            background: #000000;
-            font-size: 0.9rem;
-            color: #444;
-            border-top: 1px solid #111;
-        }
-
-        /* --- MOBILE RESPONSIVENESS --- */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            nav { padding: 1rem; }
-            .nav-links { display: none; } 
-        }
-    </style>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
+    <div class="cursor-dot" data-cursor-dot></div>
+    <div class="cursor-outline" data-cursor-outline></div>
 
-    <nav>
-        <div class="logo">ZEEHAN<span>.</span></div>
-        <div class="nav-links">
-            <a href="#about">About</a>
-            <a href="#experience">Experience</a>
-            <a href="#projects">Projects</a>
-            <a href="#skills">Skills</a>
-            <a href="#education">Education</a>
-            <a href="#contact">Contact</a>
+    <header class="header">
+        <div class="container nav-container">
+            <a href="#" class="logo">Zeehan<span class="accent">.</span></a>
+
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#projects" class="nav-link">Projects</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+
+            <button class="theme-toggle" aria-label="Toggle theme">
+                <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
         </div>
-    </nav>
+    </header>
 
-    <section class="hero" id="home">
-        <h1>Hi, I'm <span>MD Zeehan Siddique</span></h1>
-        <p>Mechanical Engineering Student at IUT | Expertise in CAD Design, Project Management, and Strategic Planning</p>
-        <a href="#contact" class="btn">Get In Touch</a>
-    </section>
-
-    <section id="about">
-        <h2 class="section-title">About Me</h2>
-        <p style="text-align: center; max-width: 700px; margin: 0 auto; color: #ccc;">
-            I am a Mechanical Engineering student with expertise in CAD design and problem-solving. 
-            I demonstrate leadership in collaborative projects and drive innovative solutions through teamwork. 
-            I have a strong background in project management and strategic planning, and I am committed to continuous learning in dynamic environments.
-        </p>
-    </section>
-
-    <section id="experience">
-        <h2 class="section-title">Work Experience</h2>
-        
-        <div class="timeline-item">
-            <div class="role">Co-Founder & Treasurer</div>
-            <span class="company">Short Circuit, Dhaka | June 2025 - Present</span>
-            <p style="color: #ccc;">Managing inventory systems and supplier collaborations to maintain stock levels. Overseeing financial transactions as Treasurer, ensuring accuracy and compliance.</p>
-        </div>
-
-        <div class="timeline-item">
-            <div class="role">Intern - Mechanical Department</div>
-            <span class="company">GPH Ispat Ltd., Chittagong | Internship</span>
-            <p style="color: #ccc;">Gained hands-on exposure to steel manufacturing processes. Studied operation of rolling mills and furnaces, and assisted engineers in maintenance and safety inspections.</p>
-        </div>
-        
-        <div class="timeline-item">
-            <div class="role">Vice-Chairperson</div>
-            <span class="company">IMechE IUT Student Chapter</span>
-            <p style="color: #ccc;">Managed club activities and organized major events such as SofE and RoboKick Rumble.</p>
-        </div>
-    </section>
-
-    <section id="projects">
-        <h2 class="section-title">Key Projects & Teams</h2>
-        <div class="projects-grid">
-            <div class="project-card">
-                <h3>Project Altair (Mars Rover)</h3>
-                <p style="color: #ccc;">Senior Member of the Mechanical Team. Competed in URC (18th globally) and European Rover Challenge 2024.</p>
-                <div class="project-tags">
-                    <span class="tag">Mechanical Design</span>
-                    <span class="tag">Robotics</span>
+    <main>
+        <section id="home" class="hero">
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <p class="overline">Hello, I'm</p>
+                    <h1 class="headline">Zeehan Siddique<span class="accent">.</span></h1>
+                    <p class="subtitle">I build things for the web.</p>
+                    <p class="description">A passionate developer crafting beautiful, accessible, and user-friendly web
+                        experiences.</p>
+                    <div class="hero-btns">
+                        <a href="#projects" class="btn btn-primary">View Work</a>
+                        <a href="assets/UPDATED CV.pdf" download class="btn btn-outline">Download CV</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <!-- Abstract geometric shape or illustration -->
+                    <div class="blob-wrapper">
+                        <div class="blob"></div>
+                    </div>
                 </div>
             </div>
-            <div class="project-card">
-                <h3>Automech Organizer</h3>
-                <p style="color: #ccc;">Served as Organizer for Automech, one of the largest national automobile festivals in Bangladesh (IUT AUS).</p>
-                <div class="project-tags">
-                    <span class="tag">Management</span>
-                    <span class="tag">Automotive</span>
+        </section>
+
+        <section id="about" class="section about">
+            <div class="container">
+                <h2 class="section-title">About Me<span class="accent">.</span></h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>I develop modern web applications with a focus on performance and seamless user experiences.
+                            My journey involves...</p>
+                        <!-- Add more bio text here -->
+
+                        <div class="skills-grid">
+                            <div class="skill-item">HTML/CSS</div>
+                            <div class="skill-item">JavaScript</div>
+                            <div class="skill-item">React</div>
+                            <div class="skill-item">Node.js</div>
+                            <div class="skill-item">Git</div>
+                            <div class="skill-item">UI/UX Design</div>
+                        </div>
+
+                        <a href="UPDATED CV.pdf" target="_blank" class="btn btn-small">Download CV</a>
+                    </div>
                 </div>
             </div>
-            <div class="project-card">
-                <h3>CSWA Certified Design</h3>
-                <p style="color: #ccc;">Achieved Certified SOLIDWORKS Associate (CSWA). Demonstrated proficiency in part modeling and assembly.</p>
-                <div class="project-tags">
-                    <span class="tag">CAD</span>
-                    <span class="tag">SolidWorks</span>
-                    <span class="tag">Design</span>
+        </section>
+
+        <section id="projects" class="section projects">
+            <div class="container">
+                <h2 class="section-title">Some Things I've Built<span class="accent">.</span></h2>
+                <div class="project-grid">
+                    <!-- Project Card 1 -->
+                    <article class="project-card">
+                        <div class="project-image">
+                            <!-- Placeholder for project image -->
+                            <div class="image-placeholder"></div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Project Name</h3>
+                            <p>A brief description of what this project does and the tech stack used.</p>
+                            <div class="project-tech">
+                                <span>VS Code</span>
+                                <span>HTML</span>
+                                <span>CSS</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" aria-label="GitHub Link"><svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                        height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                                        </path>
+                                    </svg></a>
+                                <a href="#" aria-label="External Link"><svg xmlns="http://www.w3.org/2000/svg"
+                                        width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    </svg></a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Project Card 2 -->
+                    <article class="project-card">
+                        <div class="project-image">
+                            <!-- Placeholder for project image -->
+                            <div class="image-placeholder"></div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Another Project</h3>
+                            <p>Description of another cool project you worked on.</p>
+                            <div class="project-tech">
+                                <span>React</span>
+                                <span>Node</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" aria-label="GitHub Link"><svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                        height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                                        </path>
+                                    </svg></a>
+                                <a href="#" aria-label="External Link"><svg xmlns="http://www.w3.org/2000/svg"
+                                        width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    </svg></a>
+                            </div>
+                        </div>
+                    </article>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="skills">
-        <h2 class="section-title">Technical Skills</h2>
-        <div class="skills-container">
-            <div class="skill-badge">SolidWorks (CSWA)</div>
-            <div class="skill-badge">AutoCAD</div>
-            <div class="skill-badge">Ansys</div>
-            <div class="skill-badge">Project Management</div>
-            <div class="skill-badge">Strategic Planning</div>
-            <div class="skill-badge">MS Office</div>
-            <div class="skill-badge">Public Speaking</div>
-        </div>
-    </section>
+        <section id="contact" class="section contact">
+            <div class="container contact-container">
+                <h2 class="section-title">Get In Touch<span class="accent">.</span></h2>
+                <p class="contact-text">My inbox is always open. Whether you have a question or just want to say hi,
+                    I'll try my best to get back to you!</p>
+                <a href="mailto:example@email.com" class="btn btn-primary">Say Hello</a>
 
-    <section id="education">
-        <h2 class="section-title">Education</h2>
-        <div class="education-block">
-            <h3>B.Sc. in Mechanical Engineering</h3>
-            <span style="color: #0ea5e9; font-size: 0.9rem;">Islamic University of Technology (IUT)</span>
-            <p style="color: #ccc; margin-top: 10px;">
-                Focus on Robotics, Thermodynamics, and Manufacturing Processes. Active member of IMechE and Mars Rover Team.
-            </p>
-        </div>
-    </section>
-
-    <section id="contact">
-        <h2 class="section-title">Get In Touch</h2>
-        <div class="contact">
-            <p>Interested in collaboration or have a project in mind?</p>
-            <p><strong>dhaka.zeehan@email.com</strong></p>
-            
-            <div class="social-links">
-                
-                <a href="https://www.linkedin.com/in/YOUR-PROFILE-ID-HERE" target="_blank" title="My LinkedIn">
-                    <i class="fab fa-linkedin"></i>
-                    <span>LinkedIn</span>
-                </a>
-
-                <a href="https://grabcad.com/zeehan.siddique-1" target="_blank" title="My GrabCAD Models">
-                    <i class="fas fa-cube"></i>
-                    <span>GrabCAD</span>
-                </a>
-
-                <a href="mailto:dhaka.zeehan@email.com" title="Send Email">
-                    <i class="fas fa-envelope"></i>
-                    <span>Email</span>
-                </a>
-
+                <div class="social-links">
+                    <a href="https://github.com/" target="_blank" aria-label="GitHub"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                            </path>
+                        </svg></a>
+                    <a href="https://linkedin.com/" target="_blank" aria-label="LinkedIn"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z">
+                            </path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg></a>
+                </div>
             </div>
-            </div>
-    </section>
+        </section>
+    </main>
 
-    <footer>
-        <p>&copy; 2026 MD Zeehan Siddique. All Rights Reserved.</p>
+    <footer class="footer">
+        <p>Built with <span class="heart">♥</span> by Zeehan Siddique.</p>
     </footer>
 
+    <script src="js/main.js"></script>
 </body>
+
 </html>
