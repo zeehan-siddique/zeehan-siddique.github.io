@@ -80,8 +80,11 @@
             <input type="text" id="proj-title" placeholder="Project Title">
             <textarea id="proj-desc" placeholder="Project Description" style="margin-top: 1rem;"></textarea>
             <input type="text" id="proj-tech" placeholder="Tech Stack (comma separated)" style="margin-top: 1rem;">
-            <input type="text" id="proj-image" placeholder="Image URL (direct link)" style="margin-top: 1rem;">
-            <button onclick="addProject()" class="btn btn-primary" style="margin-top: 1rem;">Add Project</button>
+            <label style="margin-top: 1rem;">Project Image</label>
+            <input type="file" id="proj-image-file" accept="image/*"
+                style="margin-top: 0.5rem; background: transparent; border: none;">
+            <button id="add-proj-btn" onclick="addProject()" class="btn btn-primary"
+                style="margin-top: 2rem; width: 100%;">Add Project</button>
         </section>
     </div>
 
@@ -148,21 +151,50 @@
         }
 
         async function addProject() {
+            const btn = document.getElementById('add-proj-btn');
             const title = document.getElementById('proj-title').value;
             const description = document.getElementById('proj-desc').value;
             const tech = document.getElementById('proj-tech').value.split(',').map(s => s.trim());
-            const image_url = document.getElementById('proj-image').value;
+            const file = document.getElementById('proj-image-file').files[0];
 
-            const { error } = await supabaseClient
-                .from('projects')
-                .insert([{ title, description, tech_stack: tech, image_url }]);
+            if (!file) {
+                alert('Please select an image file');
+                return;
+            }
 
-            if (error) alert('Error: ' + error.message);
-            else {
+            btn.disabled = true;
+            btn.innerText = 'Uploading...';
+
+            try {
+                // 1. Upload Image to Supabase Storage
+                const fileName = `${Date.now()}-${file.name}`;
+                const { data: uploadData, error: uploadError } = await supabaseClient
+                    .storage
+                    .from('project-images')
+                    .upload(fileName, file);
+
+                if (uploadError) throw uploadError;
+
+                // 2. Get Public URL
+                const { data: { publicUrl } } = supabaseClient
+                    .storage
+                    .from('project-images')
+                    .getPublicUrl(fileName);
+
+                // 3. Insert into Database
+                const { error: dbError } = await supabaseClient
+                    .from('projects')
+                    .insert([{ title, description, tech_stack: tech, image_url: publicUrl }]);
+
+                if (dbError) throw dbError;
+
                 alert('Project added successfully!');
-                document.querySelectorAll('#admin-panel input, #admin-panel textarea').forEach(i => {
-                    if (!i.id.includes('hero')) i.value = '';
-                });
+                location.reload();
+
+            } catch (err) {
+                alert('Error: ' + err.message);
+                btn.disabled = false;
+                btn.innerText = 'Add Project';
             }
         }
 
