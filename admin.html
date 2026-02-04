@@ -70,9 +70,11 @@
             <input type="text" id="hero-subtitle" placeholder="I build things for the web.">
             <label style="margin-top: 1rem;">Description</label>
             <textarea id="hero-desc" rows="3"></textarea>
-            <label style="margin-top: 1rem;">Image URL</label>
-            <input type="text" id="hero-image" placeholder="Image URL (direct link)" style="margin-top: 1rem;">
-            <button onclick="updateHero()" class="btn btn-primary" style="margin-top: 1rem;">Save Hero Content</button>
+            <label style="margin-top: 1rem;">Profile Picture</label>
+            <input type="file" id="hero-image-file" accept="image/*"
+                style="margin-top: 0.5rem; background: transparent; border: none;">
+            <button id="save-hero-btn" onclick="updateHero()" class="btn btn-primary"
+                style="margin-top: 1rem; width: 100%;">Save Hero Content</button>
         </section>
 
         <section class="form-group">
@@ -138,16 +140,63 @@
         };
 
         async function updateHero() {
+            const btn = document.getElementById('save-hero-btn');
             const subtitle = document.getElementById('hero-subtitle').value;
             const description = document.getElementById('hero-desc').value;
-            const content = JSON.stringify({ subtitle, description });
+            const file = document.getElementById('hero-image-file').files[0];
 
-            const { error } = await supabaseClient
-                .from('portfolio_content')
-                .upsert({ section_name: 'hero', content }, { onConflict: 'section_name' });
+            btn.disabled = true;
+            btn.innerText = 'Saving...';
 
-            if (error) alert('Error: ' + error.message);
-            else alert('Hero section updated successfully!');
+            try {
+                let profileUrl = null;
+
+                // 1. If a new file is selected, upload it
+                if (file) {
+                    const fileName = `profile-${Date.now()}-${file.name}`;
+                    const { data: uploadData, error: uploadError } = await supabaseClient
+                        .storage
+                        .from('project-images') // Reuse same bucket
+                        .upload(fileName, file);
+
+                    if (uploadError) throw uploadError;
+
+                    const { data: { publicUrl } } = supabaseClient
+                        .storage
+                        .from('project-images')
+                        .getPublicUrl(fileName);
+
+                    profileUrl = publicUrl;
+                }
+
+                // 2. Fetch current content to preserve URL if not updated
+                const { data: currentHero } = await supabaseClient
+                    .from('portfolio_content')
+                    .select('*')
+                    .eq('section_name', 'hero')
+                    .single();
+
+                let existingContent = currentHero ? JSON.parse(currentHero.content) : {};
+                const finalContent = JSON.stringify({
+                    subtitle,
+                    description,
+                    profile_url: profileUrl || existingContent.profile_url
+                });
+
+                // 3. Upsert into Database
+                const { error } = await supabaseClient
+                    .from('portfolio_content')
+                    .upsert({ section_name: 'hero', content: finalContent }, { onConflict: 'section_name' });
+
+                if (error) throw error;
+                alert('Hero section updated successfully!');
+                location.reload();
+
+            } catch (err) {
+                alert('Error: ' + err.message);
+                btn.disabled = false;
+                btn.innerText = 'Save Hero Content';
+            }
         }
 
         async function addProject() {

@@ -21,6 +21,7 @@ const loadDynamicContent = async () => {
         const content = JSON.parse(heroData.content);
         if (content.subtitle) document.querySelector('.hero .subtitle').innerText = content.subtitle;
         if (content.description) document.querySelector('.hero .description').innerText = content.description;
+        if (content.profile_url) document.querySelector('.profile-pic').src = content.profile_url;
     }
 
     // 2. Load Projects
