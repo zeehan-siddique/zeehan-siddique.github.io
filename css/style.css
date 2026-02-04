@@ -252,8 +252,8 @@ img {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 600px;
-    height: 400px;
+    width: 100%;
+    max-width: 600px;
 }
 
 .hero-intro {
@@ -310,7 +310,7 @@ img {
 
 .hero-visual {
     position: relative;
-    height: 400px;
+    min-height: 600px;
     display: flex;
     justify-content: center;
     align-items: center;
