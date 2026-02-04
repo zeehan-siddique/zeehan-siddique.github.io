@@ -121,8 +121,9 @@
                 .single();
 
             if (heroData) {
-                document.getElementById('hero-subtitle').value = JSON.parse(heroData.content).subtitle;
-                document.getElementById('hero-desc').value = JSON.parse(heroData.content).description;
+                const content = typeof heroData.content === 'string' ? JSON.parse(heroData.content) : heroData.content;
+                document.getElementById('hero-subtitle').value = content.subtitle || '';
+                document.getElementById('hero-desc').value = content.description || '';
             }
         }
 
@@ -169,21 +170,25 @@
                     profileUrl = publicUrl;
                 }
 
-                // 2. Fetch current content to preserve URL if not updated
+                // 2. Fetch current content
                 const { data: currentHero } = await supabaseClient
                     .from('portfolio_content')
                     .select('*')
                     .eq('section_name', 'hero')
                     .single();
 
-                let existingContent = currentHero ? JSON.parse(currentHero.content) : {};
-                const finalContent = JSON.stringify({
+                let existingContent = {};
+                if (currentHero) {
+                    existingContent = typeof currentHero.content === 'string' ? JSON.parse(currentHero.content) : currentHero.content;
+                }
+
+                const finalContent = {
                     subtitle,
                     description,
                     profile_url: profileUrl || existingContent.profile_url
-                });
+                };
 
-                // 3. Upsert into Database
+                // 3. Upsert as an OBJECT
                 const { error } = await supabaseClient
                     .from('portfolio_content')
                     .upsert({ section_name: 'hero', content: finalContent }, { onConflict: 'section_name' });
