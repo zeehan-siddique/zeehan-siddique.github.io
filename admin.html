@@ -67,26 +67,59 @@
         <section class="form-group">
             <h3>Hero Section</h3>
             <label>Sub-title</label>
-            <input type="text" id="hero-subtitle" placeholder="I build things for the web.">
+            <input type="text" id="hero-subtitle" placeholder="Mechanical Engineer & CAD Designer">
             <label style="margin-top: 1rem;">Description</label>
             <textarea id="hero-desc" rows="3"></textarea>
             <label style="margin-top: 1rem;">Profile Picture</label>
-            <input type="file" id="hero-image-file" accept="image/*"
-                style="margin-top: 0.5rem; background: transparent; border: none;">
+            <input type="file" id="hero-image-file" accept="image/*" style="margin-top: 0.5rem;">
             <button id="save-hero-btn" onclick="updateHero()" class="btn btn-primary"
-                style="margin-top: 1rem; width: 100%;">Save Hero Content</button>
+                style="margin-top: 1rem; width: 100%;">Save Hero</button>
         </section>
 
         <section class="form-group">
-            <h3>Add New Project</h3>
-            <input type="text" id="proj-title" placeholder="Project Title">
-            <textarea id="proj-desc" placeholder="Project Description" style="margin-top: 1rem;"></textarea>
-            <input type="text" id="proj-tech" placeholder="Tech Stack (comma separated)" style="margin-top: 1rem;">
-            <label style="margin-top: 1rem;">Project Image</label>
-            <input type="file" id="proj-image-file" accept="image/*"
-                style="margin-top: 0.5rem; background: transparent; border: none;">
-            <button id="add-proj-btn" onclick="addProject()" class="btn btn-primary"
-                style="margin-top: 2rem; width: 100%;">Add Project</button>
+            <h3>Education</h3>
+            <p style="font-size: 0.8rem; color: #888; margin-bottom: 1rem;">Format: Date | Degree | Institution | GPA
+                (One per line)</p>
+            <textarea id="edu-content" rows="5" placeholder="Current | B.Sc in ME | IUT | 3.67"></textarea>
+            <button onclick="updateSection('education', 'edu-content')" class="btn btn-primary"
+                style="margin-top: 1rem; width: 100%;">Save Education</button>
+        </section>
+
+        <section class="form-group">
+            <h3>Experience</h3>
+            <p style="font-size: 0.8rem; color: #888; margin-bottom: 1rem;">Format: Date | Role | Company | Point 1;
+                Point 2</p>
+            <textarea id="exp-content" rows="5" placeholder="2025 | Intern | GPH | Learned X; Fixed Y"></textarea>
+            <button onclick="updateSection('experience', 'exp-content')" class="btn btn-primary"
+                style="margin-top: 1rem; width: 100%;">Save Experience</button>
+        </section>
+
+        <section class="form-group">
+            <h3>Leadership & Activities</h3>
+            <p style="font-size: 0.8rem; color: #888; margin-bottom: 1rem;">Format: Role | Organization | Description
+            </p>
+            <textarea id="act-content" rows="5"></textarea>
+            <button onclick="updateSection('activities', 'act-content')" class="btn btn-primary"
+                style="margin-top: 1rem; width: 100%;">Save Activities</button>
+        </section>
+
+        <section class="form-group">
+            <h3>Skills & Awards</h3>
+            <label>Technical Skills (Comma separated)</label>
+            <input type="text" id="skills-list">
+            <label style="margin-top: 1rem;">Awards (One per line)</label>
+            <textarea id="awards-list" rows="3"></textarea>
+            <button onclick="updateSkillsAwards()" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">Save
+                Skills & Awards</button>
+        </section>
+
+        <section class="form-group">
+            <h3>Contact Information</h3>
+            <input type="text" id="contact-phone" placeholder="Phone Number">
+            <input type="text" id="contact-email" placeholder="Email" style="margin-top: 1rem;">
+            <input type="text" id="contact-linkedin" placeholder="LinkedIn URL" style="margin-top: 1rem;">
+            <button onclick="updateContact()" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">Save
+                Contact Info</button>
         </section>
     </div>
 
@@ -113,18 +146,62 @@
         }
 
         async function loadExistingContent() {
-            // Load Hero Content
-            const { data: heroData } = await supabaseClient
-                .from('portfolio_content')
-                .select('*')
-                .eq('section_name', 'hero')
-                .single();
+            const { data: allContent } = await supabaseClient.from('portfolio_content').select('*');
 
-            if (heroData) {
-                const content = typeof heroData.content === 'string' ? JSON.parse(heroData.content) : heroData.content;
-                document.getElementById('hero-subtitle').value = content.subtitle || '';
-                document.getElementById('hero-desc').value = content.description || '';
-            }
+            allContent.forEach(item => {
+                const content = typeof item.content === 'string' ? JSON.parse(item.content) : item.content;
+
+                if (item.section_name === 'hero') {
+                    document.getElementById('hero-subtitle').value = content.subtitle || '';
+                    document.getElementById('hero-desc').value = content.description || '';
+                } else if (item.section_name === 'education') {
+                    document.getElementById('edu-content').value = content.raw || '';
+                } else if (item.section_name === 'experience') {
+                    document.getElementById('exp-content').value = content.raw || '';
+                } else if (item.section_name === 'activities') {
+                    document.getElementById('act-content').value = content.raw || '';
+                } else if (item.section_name === 'skills_awards') {
+                    document.getElementById('skills-list').value = content.skills || '';
+                    document.getElementById('awards-list').value = content.awards || '';
+                } else if (item.section_name === 'contact') {
+                    document.getElementById('contact-phone').value = content.phone || '';
+                    document.getElementById('contact-email').value = content.email || '';
+                    document.getElementById('contact-linkedin').value = content.linkedin || '';
+                }
+            });
+        }
+
+        async function updateSection(name, fieldId) {
+            const raw = document.getElementById(fieldId).value;
+            const { error } = await supabaseClient
+                .from('portfolio_content')
+                .upsert({ section_name: name, content: { raw } }, { onConflict: 'section_name' });
+
+            if (error) alert(error.message);
+            else alert(name.charAt(0).toUpperCase() + name.slice(1) + ' saved!');
+        }
+
+        async function updateSkillsAwards() {
+            const skills = document.getElementById('skills-list').value;
+            const awards = document.getElementById('awards-list').value;
+            const { error } = await supabaseClient
+                .from('portfolio_content')
+                .upsert({ section_name: 'skills_awards', content: { skills, awards } }, { onConflict: 'section_name' });
+
+            if (error) alert(error.message);
+            else alert('Skills & Awards saved!');
+        }
+
+        async function updateContact() {
+            const phone = document.getElementById('contact-phone').value;
+            const email = document.getElementById('contact-email').value;
+            const linkedin = document.getElementById('contact-linkedin').value;
+            const { error } = await supabaseClient
+                .from('portfolio_content')
+                .upsert({ section_name: 'contact', content: { phone, email, linkedin } }, { onConflict: 'section_name' });
+
+            if (error) alert(error.message);
+            else alert('Contact Info saved!');
         }
 
         document.getElementById('login-btn').onclick = async () => {
