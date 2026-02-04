@@ -265,15 +265,16 @@ img {
 
 .profile-pic {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    max-height: 80vh;
+    object-fit: contain;
     border-radius: 0;
     border: none;
     box-shadow: none;
     z-index: 2;
-    /* Masking for the blend effect */
-    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 95%);
-    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 95%);
+    /* Smoother fade at the very bottom only */
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0) 100%);
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0) 100%);
     transition: transform 0.5s ease;
 }
 
