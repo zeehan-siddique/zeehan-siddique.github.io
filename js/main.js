@@ -10,20 +10,86 @@ if (SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
 }
 
 const loadDynamicContent = async () => {
-    // 1. Load Hero Content
-    const { data: heroData } = await supabase
-        .from('portfolio_content')
-        .select('*')
-        .eq('section_name', 'hero')
-        .single();
+    const { data: allContent } = await supabase.from('portfolio_content').select('*');
 
-    if (heroData) {
-        // Supabase might return it as an object already if column is JSONB
-        const content = typeof heroData.content === 'string' ? JSON.parse(heroData.content) : heroData.content;
+    if (allContent) {
+        allContent.forEach(item => {
+            const content = typeof item.content === 'string' ? JSON.parse(item.content) : item.content;
 
-        if (content.subtitle) document.querySelector('.hero .subtitle').innerText = content.subtitle;
-        if (content.description) document.querySelector('.hero .description').innerText = content.description;
-        if (content.profile_url) document.querySelector('.profile-pic').src = content.profile_url;
+            if (item.section_name === 'hero') {
+                if (content.subtitle) document.querySelector('.hero .subtitle').innerText = content.subtitle;
+                if (content.description) document.querySelector('.hero .description').innerText = content.description;
+                if (content.profile_url) document.querySelector('.profile-pic').src = content.profile_url;
+            }
+
+            else if (item.section_name === 'education' && content.raw) {
+                const container = document.querySelector('#education .cv-grid');
+                if (container) {
+                    container.innerHTML = content.raw.split('\n').map(line => {
+                        const parts = line.split('|').map(s => s.trim());
+                        return `<div class="cv-item">
+                            <span class="cv-date">${parts[0] || ''}</span>
+                            <h3>${parts[1] || ''}</h3>
+                            <p class="cv-org">${parts[2] || ''}</p>
+                            <p class="cv-meta">${parts[3] || ''}</p>
+                        </div>`;
+                    }).join('');
+                }
+            }
+
+            else if (item.section_name === 'experience' && content.raw) {
+                const container = document.querySelector('#experience .cv-grid');
+                if (container) {
+                    container.innerHTML = content.raw.split('\n').map(line => {
+                        const parts = line.split('|').map(s => s.trim());
+                        return `<div class="cv-item">
+                            <span class="cv-date">${parts[0] || ''}</span>
+                            <h3>${parts[1] || ''}</h3>
+                            <p class="cv-org">${parts[2] || ''}</p>
+                            <ul class="cv-details">
+                                ${parts[3] ? parts[3].split(';').map(p => `<li>${p.trim()}</li>`).join('') : ''}
+                            </ul>
+                        </div>`;
+                    }).join('');
+                }
+            }
+
+            else if (item.section_name === 'activities' && content.raw) {
+                const container = document.querySelector('#activities .cv-grid');
+                if (container) {
+                    container.innerHTML = content.raw.split('\n').map(line => {
+                        const parts = line.split('|').map(s => s.trim());
+                        return `<div class="cv-item">
+                            <h3>${parts[0] || ''}</h3>
+                            <p class="cv-org">${parts[1] || ''}</p>
+                            <p>${parts[2] || ''}</p>
+                        </div>`;
+                    }).join('');
+                }
+            }
+
+            else if (item.section_name === 'skills_awards') {
+                if (content.skills) {
+                    const skillContainer = document.querySelector('.skills-column .skills-grid');
+                    if (skillContainer) skillContainer.innerHTML = content.skills.split(',').map(s => `<div class="skill-item">${s.trim()}</div>`).join('');
+                }
+                if (content.awards) {
+                    const awardContainer = document.querySelector('.awards-column .cv-details');
+                    if (awardContainer) awardContainer.innerHTML = content.awards.split('\n').map(a => `<li>${a.trim()}</li>`).join('');
+                }
+            }
+
+            else if (item.section_name === 'contact') {
+                const contactText = document.querySelector('.contact-text');
+                if (contactText) {
+                    contactText.innerHTML = `Chittagong, Bangladesh<br>Phone: ${content.phone || ''}<br>Email: ${content.email || ''}`;
+                }
+                const link = document.querySelector('.contact .btn-primary');
+                if (link) link.href = `mailto:${content.email}`;
+                const li = document.querySelector('.social-links a');
+                if (li) li.href = content.linkedin || '#';
+            }
+        });
     }
 
     // 2. Load Projects
