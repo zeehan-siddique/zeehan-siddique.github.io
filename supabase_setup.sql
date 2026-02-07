@@ -81,3 +81,33 @@ insert into portfolio_content (section_name, content) values
   }'::jsonb
 )
 on conflict (section_name) do nothing;
+
+-- 5. Create projects table
+create table if not exists projects (
+  id uuid default gen_random_uuid() primary key,
+  title text not null,
+  description text,
+  image_url text,
+  link_url text,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- Enable RLS for projects
+alter table projects enable row level security;
+
+-- Policies for projects
+create policy "Allow public read projects"
+  on projects for select
+  using (true);
+
+create policy "Allow authenticated insert projects"
+  on projects for insert
+  with check (auth.role() = 'authenticated');
+
+create policy "Allow authenticated delete projects"
+  on projects for delete
+  using (auth.role() = 'authenticated');
+
+create policy "Allow authenticated update projects"
+  on projects for update
+  using (auth.role() = 'authenticated');
