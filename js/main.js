@@ -166,12 +166,33 @@ const loadDynamicContent = async () => {
                 if (mailBtn && content.email) mailBtn.href = `mailto:${content.email}`;
                 const li = document.querySelector('.social-links a');
                 if (li) li.href = content.linkedin || '#';
+                if (li) li.href = content.linkedin || '#';
             }
         });
+        console.log(`Updated sections: ${count}`);
     } catch (err) {
         console.error("Error in loadDynamicContent:", err);
     }
-}
+};
+
+window.debugSupabase = async () => {
+    if (!supabase) {
+        alert("Supabase library not initialized!");
+        return;
+    }
+    try {
+        const { data, error } = await supabase.from('portfolio_content').select('*');
+        if (error) {
+            alert(`Supabase Error: ${error.message}`);
+        } else {
+            const sections = data.map(d => d.section_name).join(', ');
+            alert(`Found ${data.length} rows in database: ${sections}\nCheck console for details.`);
+            console.log("Database Data:", data);
+        }
+    } catch (err) {
+        alert(`Request Failed: ${err.message}`);
+    }
+};
 
 // 2. Load Projects
 const { data: projects, error } = await supabase
