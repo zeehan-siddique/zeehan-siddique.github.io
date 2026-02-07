@@ -181,7 +181,7 @@ const loadDynamicContent = async () => {
                     if (logo) {
                         let logoContent = '';
                         if (content.logoUrl) {
-                            logoContent += `<img src="${content.logoUrl}" alt="Logo" style="height: 30px; width: auto; margin-right: 10px; border-radius: 4px;">`;
+                            logoContent += `<img src="${content.logoUrl}" alt="Logo" style="height: 32px; width: 32px; margin-right: 12px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255,255,255,0.1);">`;
                         }
                         if (content.logoText) {
                             logoContent += content.logoText;
