@@ -109,10 +109,21 @@
             <h3>Skills & Awards</h3>
             <label>Technical Skills (Comma separated)</label>
             <input type="text" id="skills-list">
+
             <label style="margin-top: 1rem;">Awards (One per line)</label>
-            <p style="font-size: 0.8rem; color: #888; margin-bottom: 0.5rem;">Format: Award Name {assets/cert.png}</p>
+            <p style="font-size: 0.8rem; color: #888; margin-bottom: 0.5rem;">Format: Award Name {url}</p>
             <textarea id="awards-list" rows="3"></textarea>
-            <button onclick="updateSkillsAwards()" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">Save
+
+            <label style="margin-top: 1rem;">Upload Certificate</label>
+            <div style="display: flex; gap: 10px; margin-top: 0.5rem;">
+                <input type="file" id="cert-upload-file" accept="image/*">
+                <button onclick="uploadCertificate()" class="btn btn-outline"
+                    style="padding: 8px 15px; font-size: 0.8rem;">Upload</button>
+            </div>
+            <p id="cert-upload-url"
+                style="font-size: 0.7rem; color: var(--accent); margin-top: 5px; word-break: break-all;"></p>
+
+            <button onclick="updateSkillsAwards()" class="btn btn-primary" style="margin-top: 1.5rem; width: 100%;">Save
                 Skills & Awards</button>
         </section>
 
@@ -284,6 +295,45 @@
                 alert('Error: ' + err.message);
                 btn.disabled = false;
                 btn.innerText = 'Save Hero Content';
+            }
+        }
+
+        async function uploadCertificate() {
+            const file = document.getElementById('cert-upload-file').files[0];
+            const urlDisplay = document.getElementById('cert-upload-url');
+
+            if (!file) {
+                alert('Please select a file first');
+                return;
+            }
+
+            urlDisplay.innerText = 'Uploading...';
+
+            try {
+                const fileName = `certs/${Date.now()}-${file.name}`;
+                const { data, error } = await supabaseClient
+                    .storage
+                    .from('project-images')
+                    .upload(fileName, file);
+
+                if (error) throw error;
+
+                const { data: { publicUrl } } = supabaseClient
+                    .storage
+                    .from('project-images')
+                    .getPublicUrl(fileName);
+
+                urlDisplay.innerHTML = `Success! Copy this URL:<br><strong>${publicUrl}</strong>`;
+
+                // Automatically append to the awards list to be helpful
+                const awardsList = document.getElementById('awards-list');
+                const certName = file.name.split('.')[0].replace(/[-_]/g, ' ');
+                if (awardsList.value) awardsList.value += '\n';
+                awardsList.value += `${certName} {${publicUrl}}`;
+
+            } catch (err) {
+                alert('Error: ' + err.message);
+                urlDisplay.innerText = '';
             }
         }
 
