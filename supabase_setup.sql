@@ -44,7 +44,7 @@ insert into portfolio_content (section_name, content) values
 (
   'experience',
   '{
-    "raw": "June 2025 – Present | Co-Founder & Treasurer | Short Circuit, Dhaka | Manage inventory systems and collaborate with suppliers to maintain optimal stock levels.; Oversee financial transactions ensuring accuracy, transparency, and compliance with standards.\nInternship | Mechanical Intern | GPH Ispat Ltd., Chittagong | Exposure to core mechanical processes in steel manufacturing and material handling systems.; Studied operation of rolling mills, furnaces, and industrial control instruments.; Assisted in routine inspections, maintenance, and plant safety procedures."
+    "raw": "June 2025 – Present | Co-Founder & Treasurer | Short Circuit, Dhaka | Manage inventory systems and collaborate with suppliers to maintain optimal stock levels.; Oversee financial transactions ensuring accuracy, transparency, and compliance with standards.\nInternship | Mechanical Intern | GPH Ispat Ltd, Chittagong | Exposure to core mechanical processes in steel manufacturing and material handling systems.; Studied operation of rolling mills, furnaces, and industrial control instruments.; Assisted in routine inspections, maintenance, and plant safety procedures."
   }'::jsonb
 ),
 (
