@@ -7,23 +7,43 @@
     <title>Admin Dashboard | Portfolio</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
+        :root {
+            --bg-color: #000000;
+            --bg-secondary: #111111;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent: #ffffff;
+        }
+
         .admin-container {
             padding-top: 120px;
             max-width: 800px;
             margin: 0 auto;
+            padding-bottom: 100px;
         }
 
         .form-group {
             margin-bottom: 2rem;
             background: var(--bg-secondary);
-            padding: 1.5rem;
-            border-radius: 8px;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        h3 {
+            margin-bottom: 1.5rem;
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.5rem;
         }
 
         label {
             display: block;
             margin-bottom: 0.5rem;
             color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 1rem;
         }
 
         input,
@@ -33,113 +53,163 @@
             background: var(--bg-color);
             border: 1px solid #333;
             color: white;
-            border-radius: 4px;
+            border-radius: 6px;
+            font-family: inherit;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
         }
 
         .login-box {
             max-width: 400px;
-            margin: 200px auto;
+            margin: 15vh auto;
+            padding: 2rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
             text-align: center;
         }
 
         .hidden {
+            display: none !important;
+        }
+
+        .upload-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        .status-msg {
+            font-size: 0.8rem;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
             display: none;
+        }
+
+        .status-success {
+            display: block;
+            background: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+        }
+
+        .status-error {
+            display: block;
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff0000;
         }
     </style>
 </head>
 
 <body>
+    <!-- Login Screen -->
     <div id="login-screen" class="login-box">
         <h2 class="section-title">Admin Login<span class="accent">.</span></h2>
-        <div class="form-group">
+        <div style="margin-top: 2rem;">
             <input type="email" id="email" placeholder="Email" required>
             <input type="password" id="password" placeholder="Password" required style="margin-top: 1rem;">
             <button id="login-btn" class="btn btn-primary" style="margin-top: 2rem; width: 100%;">Login</button>
         </div>
     </div>
 
+    <!-- Admin Panel -->
     <div id="admin-panel" class="admin-container hidden">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
+        <div
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; padding: 0 1rem;">
             <h1 class="headline" style="font-size: 2.5rem;">Dashboard</h1>
             <button id="logout-btn" class="btn btn-outline" style="padding: 8px 20px;">Logout</button>
         </div>
 
-        <section class="form-group">
-            <h3>Hero Section</h3>
-            <label>Full Name</label>
-            <input type="text" id="hero-name" placeholder="MD Zeehan Siddique">
-            <label style="margin-top: 1rem;">Sub-title</label>
-            <input type="text" id="hero-subtitle" placeholder="Mechanical Engineer & CAD Designer">
-            <label style="margin-top: 1rem;">Description</label>
-            <textarea id="hero-desc" rows="3"></textarea>
-            <label style="margin-top: 1rem;">Profile Picture</label>
-            <input type="file" id="hero-image-file" accept="image/*" style="margin-top: 0.5rem;">
-            <button id="save-hero-btn" onclick="updateHero()" class="btn btn-primary"
-                style="margin-top: 1rem; width: 100%;">Save Hero</button>
-        </section>
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="form-group">
+                <h3>Hero Section</h3>
+                <label>Full Name</label>
+                <input type="text" id="hero-name" placeholder="MD Zeehan Siddique">
+                <label>Sub-title</label>
+                <input type="text" id="hero-subtitle" placeholder="Mechanical Engineer & CAD Designer">
+                <label>Description</label>
+                <textarea id="hero-desc" rows="3"></textarea>
+                <label>Profile Picture</label>
+                <input type="file" id="hero-image-file" accept="image/*">
+                <button id="save-hero-btn" onclick="updateHero()" class="btn btn-primary"
+                    style="margin-top: 1.5rem; width: 100%;">Save Hero</button>
+            </section>
 
-        <section class="form-group">
-            <h3>Education</h3>
-            <p style="font-size: 0.8rem; color: #888; margin-bottom: 1rem;">Format: Date | Degree | Institution | GPA
-                (One per line)</p>
-            <textarea id="edu-content" rows="5" placeholder="Current | B.Sc in ME | IUT | 3.67"></textarea>
-            <button onclick="updateSection('education', 'edu-content')" class="btn btn-primary"
-                style="margin-top: 1rem; width: 100%;">Save Education</button>
-        </section>
+            <!-- Education -->
+            <section class="form-group">
+                <h3>Education</h3>
+                <p style="font-size: 0.8rem; color: #888; margin-bottom: 1rem;">Format: Date | Degree | Institution |
+                    GPA</p>
+                <textarea id="edu-content" rows="4"></textarea>
+                <button onclick="updateSection('education', 'edu-content')" class="btn btn-primary"
+                    style="margin-top: 1rem; width: 100%;">Save Education</button>
+            </section>
 
-        <section class="form-group">
-            <h3>Experience</h3>
-            <p style="font-size: 0.8rem; color: #888; margin-bottom: 1rem;">Format: Date | Role | Company | Point 1;
-                Point 2</p>
-            <textarea id="exp-content" rows="5" placeholder="2025 | Intern | GPH | Learned X; Fixed Y"></textarea>
-            <button onclick="updateSection('experience', 'exp-content')" class="btn btn-primary"
-                style="margin-top: 1rem; width: 100%;">Save Experience</button>
-        </section>
+            <!-- Experience -->
+            <section class="form-group">
+                <h3>Experience</h3>
+                <p style="font-size: 0.8rem; color: #888; margin-bottom: 1rem;">Format: Date | Role | Company | Point 1;
+                    Point 2</p>
+                <textarea id="exp-content" rows="4"></textarea>
+                <button onclick="updateSection('experience', 'exp-content')" class="btn btn-primary"
+                    style="margin-top: 1rem; width: 100%;">Save Experience</button>
+            </section>
 
-        <section class="form-group">
-            <h3>Leadership & Activities</h3>
-            <p style="font-size: 0.8rem; color: #888; margin-bottom: 1rem;">Format: Role | Organization | Description
-            </p>
-            <textarea id="act-content" rows="5"></textarea>
-            <button onclick="updateSection('activities', 'act-content')" class="btn btn-primary"
-                style="margin-top: 1rem; width: 100%;">Save Activities</button>
-        </section>
+            <!-- Leadership -->
+            <section class="form-group">
+                <h3>Leadership & Activities</h3>
+                <p style="font-size: 0.8rem; color: #888; margin-bottom: 1rem;">Format: Role | Organization |
+                    Description</p>
+                <textarea id="act-content" rows="4"></textarea>
+                <button onclick="updateSection('activities', 'act-content')" class="btn btn-primary"
+                    style="margin-top: 1rem; width: 100%;">Save Activities</button>
+            </section>
 
-        <section class="form-group">
-            <h3>Skills & Awards</h3>
-            <label>Technical Skills (Comma separated)</label>
-            <input type="text" id="skills-list">
+            <!-- Skills & Awards -->
+            <section class="form-group">
+                <h3>Skills & Awards</h3>
+                <label>Technical Skills (Comma separated)</label>
+                <input type="text" id="skills-list">
 
-            <label style="margin-top: 1rem;">Awards (One per line)</label>
-            <p style="font-size: 0.8rem; color: #888; margin-bottom: 0.5rem;">Format: Award Name {url}</p>
-            <textarea id="awards-list" rows="3"></textarea>
+                <label>Awards & Certificates (One per line)</label>
+                <p style="font-size: 0.8rem; color: #888; margin-bottom: 0.5rem;">Format: Name {url}</p>
+                <textarea id="awards-list" rows="5"></textarea>
 
-            <label style="margin-top: 1rem;">Upload Certificate</label>
-            <div style="display: flex; gap: 10px; margin-top: 0.5rem;">
-                <input type="file" id="cert-upload-file" accept="image/*">
-                <button onclick="uploadCertificate()" class="btn btn-outline"
-                    style="padding: 8px 15px; font-size: 0.8rem;">Upload</button>
-            </div>
-            <p id="cert-upload-url"
-                style="font-size: 0.7rem; color: var(--accent); margin-top: 5px; word-break: break-all;"></p>
+                <label>Upload New Certificate</label>
+                <div class="upload-row">
+                    <input type="file" id="cert-upload-file" accept="image/*">
+                    <button id="cert-upload-btn" onclick="uploadCertificate()" class="btn btn-outline"
+                        style="padding: 10px 20px; white-space: nowrap;">Upload</button>
+                </div>
+                <div id="cert-status" class="status-msg"></div>
 
-            <button onclick="updateSkillsAwards()" class="btn btn-primary" style="margin-top: 1.5rem; width: 100%;">Save
-                Skills & Awards</button>
-        </section>
+                <button onclick="updateSkillsAwards()" class="btn btn-primary"
+                    style="margin-top: 2rem; width: 100%;">Save Skills & Awards</button>
+            </section>
 
-        <section class="form-group">
-            <h3>Contact Information</h3>
-            <input type="text" id="contact-phone" placeholder="Phone Number">
-            <input type="text" id="contact-email" placeholder="Email" style="margin-top: 1rem;">
-            <input type="text" id="contact-linkedin" placeholder="LinkedIn URL" style="margin-top: 1rem;">
-            <button onclick="updateContact()" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">Save
-                Contact Info</button>
-        </section>
+            <!-- Contact -->
+            <section class="form-group">
+                <h3>Contact Information</h3>
+                <label>Phone Number</label>
+                <input type="text" id="contact-phone">
+                <label>Email Address</label>
+                <input type="text" id="contact-email">
+                <label>LinkedIn URL</label>
+                <input type="text" id="contact-linkedin">
+                <button onclick="updateContact()" class="btn btn-primary" style="margin-top: 1.5rem; width: 100%;">Save
+                    Contact Info</button>
+            </section>
+        </div>
     </div>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // CONFIGURATION - YOU NEED TO FILL THESE
         const SUPABASE_URL = 'https://tcputuhmhbtdspxvmuaz.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRjcHV0dWhtaGJ0ZHNweHZtdWF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyMTM2OTgsImV4cCI6MjA4NTc4OTY5OH0.-vOEmDg0Ny0t54LAFRPrfdhUsHClYlUaObmL9YExZ6U';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -147,78 +217,185 @@
         const loginScreen = document.getElementById('login-screen');
         const adminPanel = document.getElementById('admin-panel');
 
-        // Check Session
-        async function checkUser() {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session) showAdmin();
+        // Initial Session Check
+        async function init() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) {
+                showAdmin();
+            }
         }
 
-        async function showAdmin() {
+        function showAdmin() {
             loginScreen.classList.add('hidden');
             adminPanel.classList.remove('hidden');
-            loadExistingContent();
+            loadAllContent();
         }
 
-        async function loadExistingContent() {
-            const { data: allContent } = await supabaseClient.from('portfolio_content').select('*');
+        async function loadAllContent() {
+            try {
+                const { data: allContent, error } = await supabaseClient.from('portfolio_content').select('*');
+                if (error) throw error;
 
-            allContent.forEach(item => {
-                const content = typeof item.content === 'string' ? JSON.parse(item.content) : item.content;
+                allContent.forEach(item => {
+                    const content = typeof item.content === 'string' ? JSON.parse(item.content) : item.content;
 
-                if (item.section_name === 'hero') {
-                    document.getElementById('hero-name').value = content.name || '';
-                    document.getElementById('hero-subtitle').value = content.subtitle || '';
-                    document.getElementById('hero-desc').value = content.description || '';
-                } else if (item.section_name === 'education') {
-                    document.getElementById('edu-content').value = content.raw || '';
-                } else if (item.section_name === 'experience') {
-                    document.getElementById('exp-content').value = content.raw || '';
-                } else if (item.section_name === 'activities') {
-                    document.getElementById('act-content').value = content.raw || '';
-                } else if (item.section_name === 'skills_awards') {
-                    document.getElementById('skills-list').value = content.skills || '';
-                    document.getElementById('awards-list').value = content.awards || '';
-                } else if (item.section_name === 'contact') {
-                    document.getElementById('contact-phone').value = content.phone || '';
-                    document.getElementById('contact-email').value = content.email || '';
-                    document.getElementById('contact-linkedin').value = content.linkedin || '';
-                }
-            });
+                    if (item.section_name === 'hero') {
+                        document.getElementById('hero-name').value = content.name || '';
+                        document.getElementById('hero-subtitle').value = content.subtitle || '';
+                        document.getElementById('hero-desc').value = content.description || '';
+                    } else if (item.section_name === 'education') {
+                        document.getElementById('edu-content').value = content.raw || '';
+                    } else if (item.section_name === 'experience') {
+                        document.getElementById('exp-content').value = content.raw || '';
+                    } else if (item.section_name === 'activities') {
+                        document.getElementById('act-content').value = content.raw || '';
+                    } else if (item.section_name === 'skills_awards') {
+                        document.getElementById('skills-list').value = content.skills || '';
+                        document.getElementById('awards-list').value = content.awards || '';
+                    } else if (item.section_name === 'contact') {
+                        document.getElementById('contact-phone').value = content.phone || '';
+                        document.getElementById('contact-email').value = content.email || '';
+                        document.getElementById('contact-linkedin').value = content.linkedin || '';
+                    }
+                });
+            } catch (err) {
+                console.error("Error loading content:", err);
+            }
         }
 
+        // Generic Section Update
         async function updateSection(name, fieldId) {
             const raw = document.getElementById(fieldId).value;
+            const btn = event.target;
+            btn.disabled = true;
+            btn.innerText = 'Saving...';
+
             const { error } = await supabaseClient
                 .from('portfolio_content')
                 .upsert({ section_name: name, content: { raw } }, { onConflict: 'section_name' });
 
-            if (error) alert(error.message);
-            else alert(name.charAt(0).toUpperCase() + name.slice(1) + ' saved!');
+            btn.disabled = false;
+            btn.innerText = `Save ${name.charAt(0).toUpperCase() + name.slice(1)}`;
+
+            if (error) alert("Error: " + error.message);
+            else alert("Saved successfully!");
         }
 
         async function updateSkillsAwards() {
             const skills = document.getElementById('skills-list').value;
             const awards = document.getElementById('awards-list').value;
+            const btn = event.target;
+            btn.disabled = true;
+
             const { error } = await supabaseClient
                 .from('portfolio_content')
                 .upsert({ section_name: 'skills_awards', content: { skills, awards } }, { onConflict: 'section_name' });
 
-            if (error) alert(error.message);
-            else alert('Skills & Awards saved!');
+            btn.disabled = false;
+            if (error) alert("Error: " + error.message);
+            else alert("Skills & Awards saved!");
         }
 
         async function updateContact() {
             const phone = document.getElementById('contact-phone').value;
             const email = document.getElementById('contact-email').value;
             const linkedin = document.getElementById('contact-linkedin').value;
+            const btn = event.target;
+            btn.disabled = true;
+
             const { error } = await supabaseClient
                 .from('portfolio_content')
                 .upsert({ section_name: 'contact', content: { phone, email, linkedin } }, { onConflict: 'section_name' });
 
-            if (error) alert(error.message);
-            else alert('Contact Info saved!');
+            btn.disabled = false;
+            if (error) alert("Error: " + error.message);
+            else alert("Contact Info saved!");
         }
 
+        async function updateHero() {
+            const btn = document.getElementById('save-hero-btn');
+            const file = document.getElementById('hero-image-file').files[0];
+            const name = document.getElementById('hero-name').value;
+            const subtitle = document.getElementById('hero-subtitle').value;
+            const description = document.getElementById('hero-desc').value;
+
+            btn.disabled = true;
+            btn.innerText = 'Saving...';
+
+            try {
+                let profileUrl = null;
+                if (file) {
+                    const fileName = `profile-${Date.now()}`;
+                    const { data, error } = await supabaseClient.storage.from('project-images').upload(fileName, file);
+                    if (error) throw error;
+                    const { data: { publicUrl } } = supabaseClient.storage.from('project-images').getPublicUrl(fileName);
+                    profileUrl = publicUrl;
+                }
+
+                // Get existing content to preserve profile_url if not changed
+                const { data: current } = await supabaseClient.from('portfolio_content').select('content').eq('section_name', 'hero').single();
+                const existing = current ? (typeof current.content === 'string' ? JSON.parse(current.content) : current.content) : {};
+
+                const { error } = await supabaseClient.from('portfolio_content').upsert({
+                    section_name: 'hero',
+                    content: {
+                        name,
+                        subtitle,
+                        description,
+                        profile_url: profileUrl || existing.profile_url
+                    }
+                }, { onConflict: 'section_name' });
+
+                if (error) throw error;
+                alert("Hero section updated!");
+                location.reload();
+            } catch (err) {
+                alert("Error: " + err.message);
+                btn.disabled = false;
+                btn.innerText = 'Save Hero';
+            }
+        }
+
+        async function uploadCertificate() {
+            const fileInput = document.getElementById('cert-upload-file');
+            const file = fileInput.files[0];
+            const status = document.getElementById('cert-status');
+            const btn = document.getElementById('cert-upload-btn');
+
+            if (!file) {
+                alert("Please select a file first.");
+                return;
+            }
+
+            btn.disabled = true;
+            status.innerHTML = "Uploading certificate...";
+            status.className = "status-msg status-success";
+
+            try {
+                const fileName = `certs/${Date.now()}-${file.name.replace(/\s/g, '_')}`;
+                const { data, error } = await supabaseClient.storage.from('project-images').upload(fileName, file);
+                if (error) throw error;
+
+                const { data: { publicUrl } } = supabaseClient.storage.from('project-images').getPublicUrl(fileName);
+
+                status.innerHTML = `Success! Link created. Copying to awards list...`;
+
+                const awardsList = document.getElementById('awards-list');
+                const cleanName = file.name.split('.')[0].replace(/[-_]/g, ' ');
+                if (awardsList.value && !awardsList.value.endsWith('\n')) awardsList.value += '\n';
+                awardsList.value += `${cleanName} {${publicUrl}}`;
+
+                fileInput.value = '';
+                setTimeout(() => { status.style.display = 'none'; }, 5000);
+            } catch (err) {
+                status.innerHTML = "Upload failed: " + err.message;
+                status.className = "status-msg status-error";
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        // Auth Actions
         document.getElementById('login-btn').onclick = async () => {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
@@ -232,160 +409,7 @@
             window.location.reload();
         };
 
-        async function updateHero() {
-            const btn = document.getElementById('save-hero-btn');
-            const name = document.getElementById('hero-name').value;
-            const subtitle = document.getElementById('hero-subtitle').value;
-            const description = document.getElementById('hero-desc').value;
-            const file = document.getElementById('hero-image-file').files[0];
-
-            btn.disabled = true;
-            btn.innerText = 'Saving...';
-
-            try {
-                let profileUrl = null;
-
-                // 1. If a new file is selected, upload it
-                if (file) {
-                    const fileName = `profile-${Date.now()}-${file.name}`;
-                    const { data: uploadData, error: uploadError } = await supabaseClient
-                        .storage
-                        .from('project-images') // Reuse same bucket
-                        .upload(fileName, file);
-
-                    if (uploadError) throw uploadError;
-
-                    const { data: { publicUrl } } = supabaseClient
-                        .storage
-                        .from('project-images')
-                        .getPublicUrl(fileName);
-
-                    profileUrl = publicUrl;
-                }
-
-                // 2. Fetch current content
-                const { data: currentHero } = await supabaseClient
-                    .from('portfolio_content')
-                    .select('*')
-                    .eq('section_name', 'hero')
-                    .single();
-
-                let existingContent = {};
-                if (currentHero) {
-                    existingContent = typeof currentHero.content === 'string' ? JSON.parse(currentHero.content) : currentHero.content;
-                }
-
-                const finalContent = {
-                    name,
-                    subtitle,
-                    description,
-                    profile_url: profileUrl || existingContent.profile_url
-                };
-
-                // 3. Upsert as an OBJECT
-                const { error } = await supabaseClient
-                    .from('portfolio_content')
-                    .upsert({ section_name: 'hero', content: finalContent }, { onConflict: 'section_name' });
-
-                if (error) throw error;
-                alert('Hero section updated successfully!');
-                location.reload();
-
-            } catch (err) {
-                alert('Error: ' + err.message);
-                btn.disabled = false;
-                btn.innerText = 'Save Hero Content';
-            }
-        }
-
-        async function uploadCertificate() {
-            const file = document.getElementById('cert-upload-file').files[0];
-            const urlDisplay = document.getElementById('cert-upload-url');
-
-            if (!file) {
-                alert('Please select a file first');
-                return;
-            }
-
-            urlDisplay.innerText = 'Uploading...';
-
-            try {
-                const fileName = `certs/${Date.now()}-${file.name}`;
-                const { data, error } = await supabaseClient
-                    .storage
-                    .from('project-images')
-                    .upload(fileName, file);
-
-                if (error) throw error;
-
-                const { data: { publicUrl } } = supabaseClient
-                    .storage
-                    .from('project-images')
-                    .getPublicUrl(fileName);
-
-                urlDisplay.innerHTML = `Success! Copy this URL:<br><strong>${publicUrl}</strong>`;
-
-                // Automatically append to the awards list to be helpful
-                const awardsList = document.getElementById('awards-list');
-                const certName = file.name.split('.')[0].replace(/[-_]/g, ' ');
-                if (awardsList.value) awardsList.value += '\n';
-                awardsList.value += `${certName} {${publicUrl}}`;
-
-            } catch (err) {
-                alert('Error: ' + err.message);
-                urlDisplay.innerText = '';
-            }
-        }
-
-        async function addProject() {
-            const btn = document.getElementById('add-proj-btn');
-            const title = document.getElementById('proj-title').value;
-            const description = document.getElementById('proj-desc').value;
-            const tech = document.getElementById('proj-tech').value.split(',').map(s => s.trim());
-            const file = document.getElementById('proj-image-file').files[0];
-
-            if (!file) {
-                alert('Please select an image file');
-                return;
-            }
-
-            btn.disabled = true;
-            btn.innerText = 'Uploading...';
-
-            try {
-                // 1. Upload Image to Supabase Storage
-                const fileName = `${Date.now()}-${file.name}`;
-                const { data: uploadData, error: uploadError } = await supabaseClient
-                    .storage
-                    .from('project-images')
-                    .upload(fileName, file);
-
-                if (uploadError) throw uploadError;
-
-                // 2. Get Public URL
-                const { data: { publicUrl } } = supabaseClient
-                    .storage
-                    .from('project-images')
-                    .getPublicUrl(fileName);
-
-                // 3. Insert into Database
-                const { error: dbError } = await supabaseClient
-                    .from('projects')
-                    .insert([{ title, description, tech_stack: tech, image_url: publicUrl }]);
-
-                if (dbError) throw dbError;
-
-                alert('Project added successfully!');
-                location.reload();
-
-            } catch (err) {
-                alert('Error: ' + err.message);
-                btn.disabled = false;
-                btn.innerText = 'Add Project';
-            }
-        }
-
-        checkUser();
+        init();
     </script>
 </body>
 
