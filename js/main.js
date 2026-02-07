@@ -160,9 +160,12 @@ const loadDynamicContent = async () => {
                 }
                 const mailBtn = document.querySelector('.contact-btn-mail');
                 if (mailBtn && content.email) mailBtn.href = `mailto:${content.email}`;
-                const li = document.querySelector('.social-links a');
-                if (li) li.href = content.linkedin || '#';
-                if (li) li.href = content.linkedin || '#';
+
+                const linkedinLink = document.querySelector('.contact-linkedin');
+                if (linkedinLink) linkedinLink.href = content.linkedin || '#';
+
+                const grabcadLink = document.querySelector('.contact-grabcad');
+                if (grabcadLink) grabcadLink.href = content.grabcad || '#';
             }
 
             else if (item.section_name === 'settings') {

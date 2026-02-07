@@ -63,9 +63,10 @@ insert into portfolio_content (section_name, content) values
 (
   'contact',
   '{
-    "phone": "+8801746507888",
+    "phone": "+8801700685651",
     "email": "zeehansiddique9@gmail.com",
-    "linkedin": "https://linkedin.com/in/zeehansiddique"
+    "linkedin": "https://linkedin.com/in/zeehansiddique",
+    "grabcad": "https://grabcad.com/zeehan.siddique-1"
   }'::jsonb
 ),
 (

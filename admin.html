@@ -217,6 +217,8 @@
                 <input type="text" id="contact-email">
                 <label>LinkedIn URL</label>
                 <input type="text" id="contact-linkedin">
+                <label>GrabCAD URL</label>
+                <input type="text" id="contact-grabcad">
                 <button onclick="updateContact()" class="btn btn-primary" style="margin-top: 1.5rem; width: 100%;">Save
                     Contact Info</button>
             </section>
@@ -272,6 +274,7 @@
                         document.getElementById('contact-phone').value = content.phone || '';
                         document.getElementById('contact-email').value = content.email || '';
                         document.getElementById('contact-linkedin').value = content.linkedin || '';
+                        document.getElementById('contact-grabcad').value = content.grabcad || '';
                     } else if (item.section_name === 'settings') {
                         document.getElementById('site-theme').value = content.theme || 'default';
                         document.documentElement.setAttribute('data-theme', content.theme || 'default');
@@ -319,12 +322,13 @@
             const phone = document.getElementById('contact-phone').value;
             const email = document.getElementById('contact-email').value;
             const linkedin = document.getElementById('contact-linkedin').value;
+            const grabcad = document.getElementById('contact-grabcad').value;
             const btn = event.target;
             btn.disabled = true;
 
             const { error } = await supabaseClient
                 .from('portfolio_content')
-                .upsert({ section_name: 'contact', content: { phone, email, linkedin } }, { onConflict: 'section_name' });
+                .upsert({ section_name: 'contact', content: { phone, email, linkedin, grabcad } }, { onConflict: 'section_name' });
 
             btn.disabled = false;
             if (error) alert("Error: " + error.message);
