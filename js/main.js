@@ -41,14 +41,36 @@ const loadDynamicContent = async () => {
             else if (item.section_name === 'experience' && content.raw) {
                 const container = document.querySelector('#experience .cv-grid');
                 if (container) {
+                    const certMap = {
+                        'Mechanical Intern': 'assets/gph_internship.png'
+                    };
                     container.innerHTML = content.raw.split('\n').map(line => {
                         const parts = line.split('|').map(s => s.trim());
+                        let h3Content = parts[1] || '';
+
+                        // Handle explicit {assets/path.png} format
+                        if (h3Content.includes('{')) {
+                            const [title, cert] = h3Content.split('{').map(s => s.replace('}', '').trim());
+                            h3Content = `<span class="cert-link" data-cert="${cert}">${title}</span>`;
+                        }
+                        // Fallback mapping for known items
+                        else if (certMap[h3Content]) {
+                            h3Content = `<span class="cert-link" data-cert="${certMap[h3Content]}">${h3Content}</span>`;
+                        }
+
                         return `<div class="cv-item">
                             <span class="cv-date">${parts[0] || ''}</span>
-                            <h3>${parts[1] || ''}</h3>
+                            <h3>${h3Content}</h3>
                             <p class="cv-org">${parts[2] || ''}</p>
                             <ul class="cv-details">
-                                ${parts[3] ? parts[3].split(';').map(p => `<li>${p.trim()}</li>`).join('') : ''}
+                                ${parts[3] ? parts[3].split(';').map(p => {
+                            let liContent = p.trim();
+                            if (liContent.includes('{')) {
+                                const [text, cert] = liContent.split('{').map(s => s.replace('}', '').trim());
+                                return `<li class="cert-link" data-cert="${cert}">${text}</li>`;
+                            }
+                            return `<li>${liContent}</li>`;
+                        }).join('') : ''}
                             </ul>
                         </div>`;
                     }).join('');
@@ -76,7 +98,28 @@ const loadDynamicContent = async () => {
                 }
                 if (content.awards) {
                     const awardContainer = document.querySelector('.awards-column .cv-details');
-                    if (awardContainer) awardContainer.innerHTML = content.awards.split('\n').map(a => `<li>${a.trim()}</li>`).join('');
+                    const certMap = {
+                        'CSWA Certification for SolidWorks': 'assets/cswa.png',
+                        'University Rover Challenge 2025 Award': 'assets/urc_2025.jpg',
+                        'University Rover Challenge 2025': 'assets/urc_2025.jpg',
+                        'AUST Rover Challenge 2.0 (ARC 2.0) Award': 'assets/arc_2_0.png'
+                    };
+
+                    if (awardContainer) awardContainer.innerHTML = content.awards.split('\n').map(a => {
+                        let text = a.trim();
+                        // Handle explicit {assets/path.png} format
+                        if (text.includes('{')) {
+                            const [name, cert] = text.split('{').map(s => s.replace('}', '').trim());
+                            return `<li class="cert-link" data-cert="${cert}">${name}</li>`;
+                        }
+                        // Fallback mapping for known items
+                        for (let key in certMap) {
+                            if (text.includes(key)) {
+                                return `<li class="cert-link" data-cert="${certMap[key]}">${text}</li>`;
+                            }
+                        }
+                        return `<li>${text}</li>`;
+                    }).join('');
                 }
             }
 
