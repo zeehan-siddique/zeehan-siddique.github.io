@@ -174,6 +174,25 @@ const loadDynamicContent = async () => {
                     localStorage.setItem('site-theme', content.theme);
                     console.log(`Applied theme: ${content.theme}`);
                 }
+
+                // Update Logo Text
+                if (content.logoText) {
+                    const logo = document.querySelector('.logo');
+                    if (logo) logo.innerText = content.logoText;
+                }
+
+                // Update Social Icons
+                if (content.icons) {
+                    const linkedinLink = document.querySelector('.contact-linkedin');
+                    if (linkedinLink && content.icons.linkedin) {
+                        linkedinLink.innerHTML = content.icons.linkedin;
+                    }
+
+                    const grabcadLink = document.querySelector('.contact-grabcad');
+                    if (grabcadLink && content.icons.grabcad) {
+                        grabcadLink.innerHTML = content.icons.grabcad;
+                    }
+                }
             }
         });
 

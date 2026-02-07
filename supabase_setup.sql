@@ -72,7 +72,12 @@ insert into portfolio_content (section_name, content) values
 (
   'settings',
   '{
-    "theme": "monochrome"
+    "theme": "monochrome",
+    "logoText": "Zeehan",
+    "icons": {
+      "linkedin": "",
+      "grabcad": ""
+    }
   }'::jsonb
 )
 on conflict (section_name) do nothing;

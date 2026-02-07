@@ -137,8 +137,20 @@
                     <option value="nature">Nature (Forest Green)</option>
                     <option value="monochrome">Monochrome (Black & White)</option>
                 </select>
-                <button onclick="updateTheme()" class="btn btn-primary" style="margin-top: 1.5rem; width: 100%;">Save
-                    Theme</button>
+
+                <label style="margin-top: 1.5rem; display: block;">Site Logo Text</label>
+                <input type="text" id="site-logo-text" placeholder="Zeehan">
+
+                <label style="margin-top: 1.5rem; display: block;">Custom LinkedIn Icon (SVG Code)</label>
+                <p style="font-size: 0.75rem; color: #888; margin-bottom: 0.5rem;">Leave empty to use default icon.</p>
+                <textarea id="icon-linkedin-svg" rows="3" placeholder="Paste <svg>...</svg> here"></textarea>
+
+                <label style="margin-top: 1.5rem; display: block;">Custom GrabCAD Icon (SVG Code)</label>
+                <p style="font-size: 0.75rem; color: #888; margin-bottom: 0.5rem;">Leave empty to use default icon.</p>
+                <textarea id="icon-grabcad-svg" rows="3" placeholder="Paste <svg>...</svg> here"></textarea>
+
+                <button onclick="updateSettings()" class="btn btn-primary" style="margin-top: 2rem; width: 100%;">Save
+                    Site Settings</button>
             </section>
 
             <!-- Hero Section -->
@@ -277,6 +289,9 @@
                         document.getElementById('contact-grabcad').value = content.grabcad || '';
                     } else if (item.section_name === 'settings') {
                         document.getElementById('site-theme').value = content.theme || 'default';
+                        document.getElementById('site-logo-text').value = content.logoText || 'Zeehan';
+                        document.getElementById('icon-linkedin-svg').value = (content.icons && content.icons.linkedin) || '';
+                        document.getElementById('icon-grabcad-svg').value = (content.icons && content.icons.grabcad) || '';
                         document.documentElement.setAttribute('data-theme', content.theme || 'default');
                     }
                 });
@@ -335,26 +350,42 @@
             else alert("Contact Info saved!");
         }
 
-        async function updateTheme() {
+        async function updateSettings() {
             const theme = document.getElementById('site-theme').value;
+            const logoText = document.getElementById('site-logo-text').value;
+            const linkedinIcon = document.getElementById('icon-linkedin-svg').value;
+            const grabcadIcon = document.getElementById('icon-grabcad-svg').value;
+
             const btn = event.target;
             btn.disabled = true;
             btn.innerText = 'Saving...';
 
             const { error } = await supabaseClient
                 .from('portfolio_content')
-                .upsert({ section_name: 'settings', content: { theme } }, { onConflict: 'section_name' });
+                .upsert({
+                    section_name: 'settings',
+                    content: {
+                        theme,
+                        logoText,
+                        icons: {
+                            linkedin: linkedinIcon,
+                            grabcad: grabcadIcon
+                        }
+                    }
+                }, { onConflict: 'section_name' });
 
             btn.disabled = false;
-            btn.innerText = 'Save Theme';
+            btn.innerText = 'Save Site Settings';
 
             if (error) {
                 alert("Error: " + error.message);
             } else {
                 document.documentElement.setAttribute('data-theme', theme);
-                alert("Theme updated successfully!");
+                alert("Settings updated successfully!");
             }
         }
+
+        // Old updateTheme removed in favor of updateSettings
 
         async function updateHero() {
             const btn = document.getElementById('save-hero-btn');
