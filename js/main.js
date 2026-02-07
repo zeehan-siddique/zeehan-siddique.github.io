@@ -6,11 +6,19 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 let supabase = null;
 
 const initSupabase = () => {
-    if (typeof window.supabase !== 'undefined') {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        console.log("Supabase Client Initialized");
+    // Try to get Supabase from window object
+    const _supabase = window.supabase;
+
+    if (_supabase && _supabase.createClient) {
+        supabase = _supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        console.log("Supabase Client Initialized via window.supabase");
+    } else if (typeof supabase !== 'undefined' && supabase.createClient) {
+        // Fallback to global variable
+        supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        console.log("Supabase Client Initialized via global supabase");
     } else {
-        console.error("Supabase library not found!");
+        console.error("Supabase library not found! Check your internet connection.");
+        alert("Error: Supabase library failed to load. Please refresh.");
     }
 };
 
