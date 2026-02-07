@@ -73,6 +73,7 @@ insert into portfolio_content (section_name, content) values
   'settings',
   '{
     "theme": "monochrome",
+    "layout": "standard",
     "logoText": "Zeehan",
     "logoUrl": "",
     "icons": {

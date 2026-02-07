@@ -175,6 +175,10 @@ const loadDynamicContent = async () => {
                     console.log(`Applied theme: ${content.theme}`);
                 }
 
+                if (content.layout) {
+                    document.body.setAttribute('data-layout', content.layout);
+                }
+
                 // Update Logo
                 if (content.logoText || content.logoUrl) {
                     const logo = document.querySelector('.logo');

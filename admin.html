@@ -136,6 +136,20 @@
                     <option value="midnight">Midnight (Deep Purple)</option>
                     <option value="nature">Nature (Forest Green)</option>
                     <option value="monochrome">Monochrome (Black & White)</option>
+                    <option value="crimson">Crimson Night (Deep Red)</option>
+                    <option value="ocean">Ocean Blue (Professional Blue)</option>
+                    <option value="gold-royale">Gold Royale (Luxury Gold)</option>
+                    <option value="cyberpunk">Cyberpunk Neon</option>
+                    <option value="glass">Glassmorphism (Frosted)</option>
+                    <option value="aurora">Aurora Green (Northern Lights)</option>
+                </select>
+
+                <label style="margin-top: 1.5rem; display: block;">Layout Style</label>
+                <select id="site-layout"
+                    style="width: 100%; padding: 0.8rem; background: var(--bg-color); border: 1px solid #333; color: white; border-radius: 6px;">
+                    <option value="standard">Standard (Split Left)</option>
+                    <option value="centered">Modern Centered</option>
+                    <option value="compact">Tighter Compact</option>
                 </select>
 
                 <label style="margin-top: 1.5rem; display: block;">Site Logo Text</label>
@@ -329,6 +343,7 @@
                         document.getElementById('contact-grabcad').value = content.grabcad || '';
                     } else if (item.section_name === 'settings') {
                         document.getElementById('site-theme').value = content.theme || 'default';
+                        document.getElementById('site-layout').value = content.layout || 'standard';
                         document.getElementById('site-logo-text').value = content.logoText || 'Zeehan';
                         document.getElementById('site-logo-url').value = content.logoUrl || '';
                         document.getElementById('icon-linkedin-svg').value = (content.icons && content.icons.linkedin) || '';
@@ -393,6 +408,7 @@
 
         async function updateSettings() {
             const theme = document.getElementById('site-theme').value;
+            const layout = document.getElementById('site-layout').value;
             const logoText = document.getElementById('site-logo-text').value;
             const logoUrl = document.getElementById('site-logo-url').value;
             const linkedinIcon = document.getElementById('icon-linkedin-svg').value;
@@ -408,6 +424,7 @@
                     section_name: 'settings',
                     content: {
                         theme,
+                        layout,
                         logoText,
                         logoUrl,
                         icons: {
@@ -424,6 +441,7 @@
                 alert("Error: " + error.message);
             } else {
                 document.documentElement.setAttribute('data-theme', theme);
+                document.body.setAttribute('data-layout', layout);
                 alert("Settings updated successfully!");
             }
         }

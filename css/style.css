@@ -45,12 +45,65 @@
 
 [data-theme="monochrome"] {
     --bg-color: #000000;
-    --bg-secondary: #111111;
+    --bg-secondary: #0a0a0a;
     --text-primary: #ffffff;
-    --text-secondary: #a0a0a0;
+    --text-secondary: #888888;
     --accent: #ffffff;
-    /* White */
-    --accent-glow: rgba(255, 255, 255, 0.2);
+    --accent-glow: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="crimson"] {
+    --bg-color: #0d0000;
+    --bg-secondary: #1a0000;
+    --text-primary: #ffffff;
+    --text-secondary: #cc8888;
+    --accent: #ff0000;
+    --accent-glow: rgba(255, 0, 0, 0.2);
+}
+
+[data-theme="ocean"] {
+    --bg-color: #001219;
+    --bg-secondary: #001d26;
+    --text-primary: #e9d8a6;
+    --text-secondary: #94d2bd;
+    --accent: #0077b6;
+    --accent-glow: rgba(0, 119, 182, 0.3);
+}
+
+[data-theme="gold-royale"] {
+    --bg-color: #0a0a0a;
+    --bg-secondary: #141414;
+    --text-primary: #ffffff;
+    --text-secondary: #b8b8b8;
+    --accent: #d4af37;
+    --accent-glow: rgba(212, 175, 55, 0.3);
+}
+
+[data-theme="cyberpunk"] {
+    --bg-color: #0b0114;
+    --bg-secondary: #160228;
+    --text-primary: #00fff2;
+    --text-secondary: #8b5cf6;
+    --accent: #ff007f;
+    --accent-glow: rgba(255, 0, 127, 0.4);
+}
+
+[data-theme="glass"] {
+    --bg-color: #0c0c0c;
+    --bg-secondary: rgba(255, 255, 255, 0.03);
+    --text-primary: #ffffff;
+    --text-secondary: #aaaaaa;
+    --accent: #ffffff;
+    --accent-glow: rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="aurora"] {
+    --bg-color: #010b13;
+    --bg-secondary: #021a2b;
+    --text-primary: #f0fdf4;
+    --text-secondary: #94d2bd;
+    --accent: #5efc82;
+    --accent-glow: rgba(94, 252, 130, 0.3);
 }
 
 * {
@@ -590,6 +643,43 @@ img {
 
 .heart {
     color: var(--accent);
+}
+
+/* Layout Variations */
+[data-layout="centered"] .hero-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+}
+
+[data-layout="centered"] .hero-content {
+    margin: 0 auto;
+}
+
+[data-layout="centered"] .hero-btns {
+    justify-content: center;
+}
+
+[data-layout="centered"] .hero-visual {
+    display: none;
+}
+
+[data-layout="centered"] .section-title {
+    display: block;
+    text-align: center;
+    width: 100%;
+}
+
+[data-layout="centered"] .section-title::after {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+[data-layout="compact"] .section {
+    padding: 60px 0;
+}
+
+[data-layout="compact"] .cv-grid {
+    gap: 1.5rem;
 }
 
 /* Media Queries */
