@@ -168,6 +168,7 @@ const loadDynamicContent = async () => {
             else if (item.section_name === 'settings') {
                 if (content.theme) {
                     document.documentElement.setAttribute('data-theme', content.theme);
+                    localStorage.setItem('site-theme', content.theme);
                     console.log(`Applied theme: ${content.theme}`);
                 }
             }
