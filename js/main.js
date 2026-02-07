@@ -175,10 +175,19 @@ const loadDynamicContent = async () => {
                     console.log(`Applied theme: ${content.theme}`);
                 }
 
-                // Update Logo Text
-                if (content.logoText) {
+                // Update Logo
+                if (content.logoText || content.logoUrl) {
                     const logo = document.querySelector('.logo');
-                    if (logo) logo.innerText = content.logoText;
+                    if (logo) {
+                        let logoContent = '';
+                        if (content.logoUrl) {
+                            logoContent += `<img src="${content.logoUrl}" alt="Logo" style="height: 30px; width: auto; margin-right: 10px; border-radius: 4px;">`;
+                        }
+                        if (content.logoText) {
+                            logoContent += content.logoText;
+                        }
+                        logo.innerHTML = logoContent;
+                    }
                 }
 
                 // Update Social Icons

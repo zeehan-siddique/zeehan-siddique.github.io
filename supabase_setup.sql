@@ -74,6 +74,7 @@ insert into portfolio_content (section_name, content) values
   '{
     "theme": "monochrome",
     "logoText": "Zeehan",
+    "logoUrl": "",
     "icons": {
       "linkedin": "",
       "grabcad": ""

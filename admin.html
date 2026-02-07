@@ -141,6 +141,14 @@
                 <label style="margin-top: 1.5rem; display: block;">Site Logo Text</label>
                 <input type="text" id="site-logo-text" placeholder="Zeehan">
 
+                <label style="margin-top: 1.5rem; display: block;">Site Logo Image (Optional)</label>
+                <input type="hidden" id="site-logo-url">
+                <div class="upload-row">
+                    <input type="file" id="site-logo-file" accept="image/*">
+                    <button onclick="uploadSiteLogo()" class="btn btn-outline" style="padding: 10px 20px;">Upload
+                        Logo</button>
+                </div>
+
                 <label style="margin-top: 1.5rem; display: block;">Custom LinkedIn Icon (SVG Code)</label>
                 <p style="font-size: 0.75rem; color: #888; margin-bottom: 0.5rem;">Leave empty to use default icon.</p>
                 <textarea id="icon-linkedin-svg" rows="3" placeholder="Paste <svg>...</svg> here"></textarea>
@@ -322,6 +330,7 @@
                     } else if (item.section_name === 'settings') {
                         document.getElementById('site-theme').value = content.theme || 'default';
                         document.getElementById('site-logo-text').value = content.logoText || 'Zeehan';
+                        document.getElementById('site-logo-url').value = content.logoUrl || '';
                         document.getElementById('icon-linkedin-svg').value = (content.icons && content.icons.linkedin) || '';
                         document.getElementById('icon-grabcad-svg').value = (content.icons && content.icons.grabcad) || '';
                         document.documentElement.setAttribute('data-theme', content.theme || 'default');
@@ -385,6 +394,7 @@
         async function updateSettings() {
             const theme = document.getElementById('site-theme').value;
             const logoText = document.getElementById('site-logo-text').value;
+            const logoUrl = document.getElementById('site-logo-url').value;
             const linkedinIcon = document.getElementById('icon-linkedin-svg').value;
             const grabcadIcon = document.getElementById('icon-grabcad-svg').value;
 
@@ -399,6 +409,7 @@
                     content: {
                         theme,
                         logoText,
+                        logoUrl,
                         icons: {
                             linkedin: linkedinIcon,
                             grabcad: grabcadIcon
@@ -570,6 +581,33 @@
             } finally {
                 btn.disabled = false;
                 btn.innerText = 'Upload Image';
+            }
+        }
+
+        async function uploadSiteLogo() {
+            const file = document.getElementById('site-logo-file').files[0];
+            if (!file) {
+                alert("Please select a logo file.");
+                return;
+            }
+
+            const btn = event.target;
+            btn.disabled = true;
+            btn.innerText = 'Uploading...';
+
+            try {
+                const fileName = `logo-${Date.now()}`;
+                const { data, error } = await supabaseClient.storage.from('project-images').upload(fileName, file);
+                if (error) throw error;
+
+                const { data: { publicUrl } } = supabaseClient.storage.from('project-images').getPublicUrl(fileName);
+                document.getElementById('site-logo-url').value = publicUrl;
+                alert("Logo uploaded! Click 'Save Site Settings' to apply.");
+            } catch (err) {
+                alert("Upload failed: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'Upload Logo';
             }
         }
 
