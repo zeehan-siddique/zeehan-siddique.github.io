@@ -228,7 +228,8 @@
                     <!-- Project entries will be loaded here -->
                 </div>
 
-                <h4>Add New Project</h4>
+                <h4 id="project-form-title">Add New Project</h4>
+                <input type="hidden" id="editing-project-id">
                 <label>Project Title</label>
                 <input type="text" id="proj-title">
                 <label>Description</label>
@@ -242,8 +243,12 @@
                     <input type="file" id="proj-file" accept="image/*">
                     <button onclick="uploadProjectImage()" class="btn btn-outline">Upload Image</button>
                 </div>
-                <button onclick="addProject()" class="btn btn-primary" style="margin-top: 1.5rem; width: 100%;">Add
-                    Project</button>
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button id="submit-proj-btn" onclick="addProject()" class="btn btn-primary" style="flex: 2;">Add
+                        Project</button>
+                    <button id="cancel-proj-btn" onclick="clearProjectForm()" class="btn btn-outline"
+                        style="flex: 1; display: none;">Cancel</button>
+                </div>
             </section>
 
             <!-- Contact -->
@@ -412,6 +417,9 @@
             }
         }
 
+        // Global state for projects
+        let currentProjects = [];
+
         // Old updateTheme removed in favor of updateSettings
 
         async function loadProjectsAdmin() {
@@ -428,6 +436,8 @@
                 return;
             }
 
+            currentProjects = projects;
+
             if (projects.length === 0) {
                 list.innerHTML = '<p style="color:#888;">No projects added yet.</p>';
                 return;
@@ -435,16 +445,50 @@
 
             list.innerHTML = projects.map(p => `
                 <div style="background:rgba(255,255,255,0.05); padding:1rem; border-radius:8px; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center;">
-                    <div>
+                    <div style="flex: 1;">
                         <strong style="color:var(--accent);">${p.title}</strong>
-                        <p style="font-size:0.85rem; margin-top:0.3rem;">${p.description || ''}</p>
+                        <p style="font-size:0.85rem; margin-top:0.3rem; opacity: 0.8;">${p.description || ''}</p>
                     </div>
-                    <button onclick="deleteProject('${p.id}')" class="btn" style="color:#ff4444; border:1px solid #ff4444; padding:5px 15px;">Delete</button>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button onclick="startEditProject('${p.id}')" class="btn btn-outline" style="padding:5px 15px; font-size: 0.8rem;">Edit</button>
+                        <button onclick="deleteProject('${p.id}')" class="btn" style="color:#ff4444; border:1px solid #ff4444; padding:5px 15px; font-size: 0.8rem;">Delete</button>
+                    </div>
                 </div>
             `).join('');
         }
 
+        function startEditProject(id) {
+            const project = currentProjects.find(p => p.id === id);
+            if (!project) return;
+
+            document.getElementById('editing-project-id').value = project.id;
+            document.getElementById('proj-title').value = project.title;
+            document.getElementById('proj-desc').value = project.description || '';
+            document.getElementById('proj-url').value = project.link_url || '';
+            document.getElementById('proj-image-url').value = project.image_url || '';
+
+            document.getElementById('project-form-title').innerText = 'Edit Project';
+            document.getElementById('submit-proj-btn').innerText = 'Update Project';
+            document.getElementById('cancel-proj-btn').style.display = 'block';
+
+            // Scroll to form
+            document.getElementById('project-form-title').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function clearProjectForm() {
+            document.getElementById('editing-project-id').value = '';
+            document.getElementById('proj-title').value = '';
+            document.getElementById('proj-desc').value = '';
+            document.getElementById('proj-url').value = '';
+            document.getElementById('proj-image-url').value = '';
+
+            document.getElementById('project-form-title').innerText = 'Add New Project';
+            document.getElementById('submit-proj-btn').innerText = 'Add Project';
+            document.getElementById('cancel-proj-btn').style.display = 'none';
+        }
+
         async function addProject() {
+            const id = document.getElementById('editing-project-id').value;
             const title = document.getElementById('proj-title').value;
             const description = document.getElementById('proj-desc').value;
             const link_url = document.getElementById('proj-url').value;
@@ -455,18 +499,34 @@
                 return;
             }
 
-            const { error } = await supabaseClient
-                .from('projects')
-                .insert([{ title, description, link_url, image_url }]);
+            const btn = document.getElementById('submit-proj-btn');
+            btn.disabled = true;
+            btn.innerText = 'Saving...';
+
+            let error;
+            if (id) {
+                // UPDATE
+                const { error: err } = await supabaseClient
+                    .from('projects')
+                    .update({ title, description, link_url, image_url })
+                    .eq('id', id);
+                error = err;
+            } else {
+                // INSERT
+                const { error: err } = await supabaseClient
+                    .from('projects')
+                    .insert([{ title, description, link_url, image_url }]);
+                error = err;
+            }
+
+            btn.disabled = false;
+            btn.innerText = id ? 'Update Project' : 'Add Project';
 
             if (error) {
-                alert("Error adding project: " + error.message);
+                alert("Error saving project: " + error.message);
             } else {
-                alert("Project added successfully!");
-                document.getElementById('proj-title').value = '';
-                document.getElementById('proj-desc').value = '';
-                document.getElementById('proj-url').value = '';
-                document.getElementById('proj-image-url').value = '';
+                alert(id ? "Project updated!" : "Project added!");
+                clearProjectForm();
                 loadProjectsAdmin();
             }
         }
