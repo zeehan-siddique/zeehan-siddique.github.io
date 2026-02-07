@@ -1,33 +1,29 @@
 // Main JavaScript file
 
 // SUPABASE CONFIGURATION
-const SUPABASE_URL = 'https://tcputuhmhbtdspxvmuaz.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRjcHV0dWhtaGJ0ZHNweHZtdWF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyMTM2OTgsImV4cCI6MjA4NTc4OTY5OH0.-vOEmDg0Ny0t54LAFRPrfdhUsHClYlUaObmL9YExZ6U';
-let supabase = null;
+const SUPABASE_URL = 'https://odklzxloviqmmldmrmes.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9ka2x6eGxvdmlxbW1sZG1ybWVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA0NzIyODMsImV4cCI6MjA4NjA0ODI4M30.vJdUyT3_IrVrhne4_zndwuE2npj9VRewWgGT4JJ5DzY';
+let supabaseClient = null;
 
 const initSupabase = () => {
     // Try to get Supabase from window object
     const _supabase = window.supabase;
 
     if (_supabase && _supabase.createClient) {
-        supabase = _supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        supabaseClient = _supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         console.log("Supabase Client Initialized via window.supabase");
-    } else if (typeof supabase !== 'undefined' && supabase.createClient) {
-        // Fallback to global variable
-        supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        console.log("Supabase Client Initialized via global supabase");
     } else {
         console.error("Supabase library not found! Check your internet connection.");
-        alert("Error: Supabase library failed to load. Please refresh.");
+        // alert("Error: Supabase library failed to load. Please refresh.");
     }
 };
 
 const loadDynamicContent = async () => {
-    if (!supabase) return;
+    if (!supabaseClient) return;
 
     console.log("Fetching content from Supabase...");
     try {
-        const { data: allContent, error } = await supabase.from('portfolio_content').select('*');
+        const { data: allContent, error } = await supabaseClient.from('portfolio_content').select('*');
 
         if (error) {
             console.error("Supabase Select Error:", error.message);
@@ -176,12 +172,12 @@ const loadDynamicContent = async () => {
 };
 
 window.debugSupabase = async () => {
-    if (!supabase) {
+    if (!supabaseClient) {
         alert("Backend is currently DISABLED as requested.");
         return;
     }
     try {
-        const { data, error } = await supabase.from('portfolio_content').select('*');
+        const { data, error } = await supabaseClient.from('portfolio_content').select('*');
         if (error) {
             alert(`Supabase Error: ${error.message}`);
         } else {
@@ -196,10 +192,10 @@ window.debugSupabase = async () => {
 
 // 2. Load Projects
 const loadProjects = async () => {
-    if (!supabase) return;
+    if (!supabaseClient) return;
 
     try {
-        const { data: projects, error } = await supabase
+        const { data: projects, error } = await supabaseClient
             .from('projects')
             .select('*')
             .order('created_at', { ascending: false });
@@ -240,12 +236,14 @@ const loadProjects = async () => {
 
 document.addEventListener('DOMContentLoaded', async () => {
     // Initialize Supabase
-    // initSupabase();
+    initSupabase();
 
     // Fetch dynamic content if Supabase is connected
-    // if (supabase) {
-    //     await Promise.all([loadDynamicContent(), loadProjects()]);
-    // }
+    if (supabaseClient) {
+        await Promise.all([loadDynamicContent(), loadProjects()]);
+    }
+
+    // Mobile Navigation Toggle
 
     // Mobile Navigation Toggle
     const hamburger = document.querySelector('.hamburger');
