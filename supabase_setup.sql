@@ -18,11 +18,11 @@ create policy "Allow public read access"
 -- Allow only authenticated users (Admin) to insert/update/delete
 create policy "Allow authenticated insert"
   on portfolio_content for insert
-  with check (auth.role() = 'authenticated');
+  with check ((select auth.role()) = 'authenticated');
 
 create policy "Allow authenticated update"
   on portfolio_content for update
-  using (auth.role() = 'authenticated');
+  using ((select auth.role()) = 'authenticated');
 
 -- 4. Insert Initial Data (from your current website)
 insert into portfolio_content (section_name, content) values
@@ -104,12 +104,12 @@ create policy "Allow public read projects"
 
 create policy "Allow authenticated insert projects"
   on projects for insert
-  with check (auth.role() = 'authenticated');
+  with check ((select auth.role()) = 'authenticated');
 
 create policy "Allow authenticated delete projects"
   on projects for delete
-  using (auth.role() = 'authenticated');
+  using ((select auth.role()) = 'authenticated');
 
 create policy "Allow authenticated update projects"
   on projects for update
-  using (auth.role() = 'authenticated');
+  using ((select auth.role()) = 'authenticated');

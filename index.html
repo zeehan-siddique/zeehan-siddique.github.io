@@ -15,6 +15,7 @@
         rel="stylesheet">
 
     <!-- CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css?v=2">
 
     <!-- Theme Guard: Prevention of gold theme flash -->
@@ -46,6 +47,14 @@
                 </ul>
             </nav>
 
+            <button class="theme-toggle" aria-label="Toggle Theme"
+                style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(128,128,128,0.5); background: transparent; color: var(--text-primary); cursor: pointer; margin-left: auto; margin-right: 1.5rem; transition: var(--transition);">
+                <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+
             <div class="hamburger">
                 <span class="bar"></span>
                 <span class="bar"></span>
@@ -56,7 +65,7 @@
 
     <main>
         <section id="home" class="hero">
-            <div class="container hero-container">
+            <div class="container hero-container" data-aos="fade-in" data-aos-duration="1200">
                 <div class="hero-content">
                     <p class="overline">Hello, I'm</p>
                     <h1 class="headline">Zeehan Siddique</h1>
@@ -79,7 +88,7 @@
         </section>
 
         <section id="education" class="section">
-            <div class="container">
+            <div class="container" data-aos="fade-up">
                 <h2 class="section-title">Education<span class="accent">.</span></h2>
                 <div class="cv-grid">
                     <div class="cv-item">
@@ -105,7 +114,7 @@
         </section>
 
         <section id="experience" class="section" style="background: var(--bg-secondary);">
-            <div class="container">
+            <div class="container" data-aos="fade-up">
                 <h2 class="section-title">Work Experience<span class="accent">.</span></h2>
                 <div class="cv-grid">
                     <div class="cv-item">
@@ -136,7 +145,7 @@
         </section>
 
         <section id="activities" class="section">
-            <div class="container">
+            <div class="container" data-aos="fade-up">
                 <h2 class="section-title">Leadership & Activities<span class="accent">.</span></h2>
                 <div class="cv-grid">
                     <div class="cv-item">
@@ -160,7 +169,7 @@
         </section>
 
         <section id="skills" class="section" style="background: var(--bg-secondary);">
-            <div class="container">
+            <div class="container" data-aos="fade-up">
                 <h2 class="section-title">Skills & Awards<span class="accent">.</span></h2>
                 <div class="cv-split">
                     <div class="skills-column">
@@ -191,7 +200,7 @@
         </section>
 
         <section id="projects" class="section">
-            <div class="container">
+            <div class="container" data-aos="fade-up">
                 <h2 class="section-title">Projects<span class="accent">.</span></h2>
                 <div class="project-grid">
                     <!-- Projects will be loaded from Supabase -->
@@ -202,7 +211,7 @@
         </section>
 
         <section id="contact" class="section contact">
-            <div class="container contact-container">
+            <div class="container contact-container" data-aos="fade-up">
                 <h2 class="section-title" style="display: block; width: 100%; text-align: center;">Get In Touch<span
                         class="accent">.</span></h2>
                 <div class="contact-btns" style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
@@ -276,6 +285,7 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="js/main.js?v=4"></script>
 </body>
 
