@@ -1,8 +1,8 @@
 // Main JavaScript file
 
 // SUPABASE CONFIGURATION
-const SUPABASE_URL = 'https://tcputuhmhbtdspxvmuaz.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRjcHV0dWhtaGJ0ZHNweHZtdWF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyMTM2OTgsImV4cCI6MjA4NTc4OTY5OH0.-vOEmDg0Ny0t54LAFRPrfdhUsHClYlUaObmL9YExZ6U';
+const SUPABASE_URL = 'https://odklzxloviqmmldmrmes.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9ka2x6eGxvdmlxbW1sZG1ybWVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA0NzIyODMsImV4cCI6MjA4NjA0ODI4M30.vJdUyT3_IrVrhne4_zndwuE2npj9VRewWgGT4JJ5DzY';
 let supabaseClient = null;
 
 const initSupabase = () => {
@@ -22,7 +22,6 @@ const loadDynamicContent = async () => {
     if (!supabaseClient) return;
 
     console.log("Fetching content from Supabase...");
-    let count = 0;
     try {
         const { data: allContent, error } = await supabaseClient.from('portfolio_content').select('*');
 
@@ -52,9 +51,9 @@ const loadDynamicContent = async () => {
             else if (item.section_name === 'education' && content.raw) {
                 const container = document.querySelector('#education .cv-grid');
                 if (container) {
-                    container.innerHTML = content.raw.split('\n').map((line, idx) => {
+                    container.innerHTML = content.raw.split('\n').map(line => {
                         const parts = line.split('|').map(s => s.trim());
-                        return `<div class="cv-item" data-aos="fade-up" data-aos-delay="${idx * 100}">
+                        return `<div class="cv-item">
                             <span class="cv-date">${parts[0] || ''}</span>
                             <h3>${parts[1] || ''}</h3>
                             <p class="cv-org">${parts[2] || ''}</p>
@@ -70,7 +69,7 @@ const loadDynamicContent = async () => {
                     const certMap = {
                         'Mechanical Intern': 'assets/gph_internship.png'
                     };
-                    container.innerHTML = content.raw.split('\n').map((line, idx) => {
+                    container.innerHTML = content.raw.split('\n').map(line => {
                         const parts = line.split('|').map(s => s.trim());
                         let h3Content = parts[1] || '';
 
@@ -84,7 +83,7 @@ const loadDynamicContent = async () => {
                             h3Content = `<span class="cert-link" data-cert="${certMap[h3Content]}">${h3Content}</span>`;
                         }
 
-                        return `<div class="cv-item" data-aos="fade-up" data-aos-delay="${idx * 100}">
+                        return `<div class="cv-item">
                             <span class="cv-date">${parts[0] || ''}</span>
                             <h3>${h3Content}</h3>
                             <p class="cv-org">${parts[2] || ''}</p>
@@ -106,9 +105,9 @@ const loadDynamicContent = async () => {
             else if (item.section_name === 'activities' && content.raw) {
                 const container = document.querySelector('#activities .cv-grid');
                 if (container) {
-                    container.innerHTML = content.raw.split('\n').map((line, idx) => {
+                    container.innerHTML = content.raw.split('\n').map(line => {
                         const parts = line.split('|').map(s => s.trim());
-                        return `<div class="cv-item" data-aos="fade-up" data-aos-delay="${idx * 100}">
+                        return `<div class="cv-item">
                             <h3>${parts[0] || ''}</h3>
                             <p class="cv-org">${parts[1] || ''}</p>
                             <p>${parts[2] || ''}</p>
@@ -169,7 +168,7 @@ const loadDynamicContent = async () => {
                 if (grabcadLink) grabcadLink.href = content.grabcad || '#';
             }
 
-            if (item.section_name === 'settings') {
+            else if (item.section_name === 'settings') {
                 if (content.theme) {
                     document.documentElement.setAttribute('data-theme', content.theme);
                     localStorage.setItem('site-theme', content.theme);
@@ -208,12 +207,10 @@ const loadDynamicContent = async () => {
                     }
                 }
             }
-            count++;
         });
 
         // Smoothly reveal content once loaded
         document.querySelector('.hero-content').classList.add('content-loaded');
-        if (window.AOS) setTimeout(() => window.AOS.refresh(), 100);
 
         console.log(`Updated sections: ${count}`);
     } catch (err) {
@@ -265,7 +262,7 @@ const loadProjects = async () => {
             projectGrid.innerHTML = ''; // Clear loading
             projects.forEach(project => {
                 const projectCard = `
-                        <article class="project-card" data-aos="fade-up" data-aos-delay="${projects.indexOf(project) * 100}">
+                        <article class="project-card">
                             <div class="project-image">
                                 <img src="${project.image_url || 'assets/placeholder.png'}" alt="${project.title}">
                             </div>
@@ -279,7 +276,6 @@ const loadProjects = async () => {
                         </article>`;
                 projectGrid.innerHTML += projectCard;
             });
-            if (window.AOS) setTimeout(() => window.AOS.refresh(), 100);
         }
     } catch (err) {
         console.error("Error in loadProjects:", err);
@@ -293,44 +289,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Fetch dynamic content if Supabase is connected
     if (supabaseClient) {
         await Promise.all([loadDynamicContent(), loadProjects()]);
-    }
-
-    // Initialize AOS
-    if (window.AOS) {
-        AOS.init({
-            duration: 800,
-            once: true,
-            offset: 50
-        });
-    }
-
-    // Theme Toggle Logic
-    const themeToggle = document.querySelector('.theme-toggle');
-    const themeIcon = document.getElementById('theme-icon');
-
-    const updateThemeIcon = (theme) => {
-        if (!themeIcon) return;
-        // If theme is 'light', show Moon (to switch back to dark mode)
-        // If theme is 'monochrome' (or any other dark theme), show Sun (to switch to light mode)
-        if (theme === 'light') {
-            themeIcon.innerHTML = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`; /* Moon icon */
-        } else {
-            themeIcon.innerHTML = `<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>`; /* Sun icon */
-        }
-    };
-
-    if (themeToggle) {
-        // Find existing theme or default to monochrome
-        let currentTheme = document.documentElement.getAttribute('data-theme') || localStorage.getItem('site-theme') || 'monochrome';
-        updateThemeIcon(currentTheme);
-
-        themeToggle.addEventListener('click', () => {
-            let activeTheme = document.documentElement.getAttribute('data-theme');
-            let newTheme = activeTheme === 'light' ? 'monochrome' : 'light';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('site-theme', newTheme);
-            updateThemeIcon(newTheme);
-        });
     }
 
     // Mobile Navigation Toggle
